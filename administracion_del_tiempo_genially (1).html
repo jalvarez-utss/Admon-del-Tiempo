@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración del Tiempo | Presentación Interactiva</title>
+<style>
+:root{
+  --dark:#104938;
+  --green:#156049;
+  --mid:#279371;
+  --teal:#3F9089;
+  --light:#D1DE8C;
+  --accent:#93C01F;
+  --white:#FFFFFF;
+  --red:#B22222;
+  --yellow:#DAA520;
+  --ink:#18352d;
+  --muted:#58726a;
+  --shadow:0 18px 45px rgba(16,73,56,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:#eef4f1;color:var(--ink)}
+body{overflow:hidden}
+button{font:inherit}
+.app{height:100vh;display:grid;grid-template-columns:280px 1fr}
+.sidebar{background:var(--dark);color:white;padding:24px 18px;display:flex;flex-direction:column;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:var(--light);display:grid;place-items:center;color:var(--dark);font-weight:900}
+.brand h1{font-size:15px;margin:0;line-height:1.2}
+.brand small{opacity:.7}
+.progress-wrap{margin:0 6px 22px}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;opacity:.75;margin-bottom:7px}
+.progress{height:6px;background:rgba(255,255,255,.14);border-radius:99px;overflow:hidden}
+.progress>span{display:block;height:100%;width:0;background:var(--accent);transition:.4s}
+.nav{display:flex;flex-direction:column;gap:5px;overflow:auto}
+.nav button{border:0;background:transparent;color:rgba(255,255,255,.72);padding:10px 12px;text-align:left;border-radius:9px;cursor:pointer;font-size:12px;transition:.2s}
+.nav button:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav button.active{background:var(--light);color:var(--dark);font-weight:800}
+.sidebar-footer{margin-top:auto;font-size:10px;line-height:1.5;opacity:.6;padding:12px 6px}
+.main{min-width:0;height:100vh;position:relative}
+.slides{height:100%;position:relative}
+.slide{position:absolute;inset:0;padding:54px 7vw 84px;display:none;overflow:auto;background:linear-gradient(135deg,#fff 0%,#f8fbfa 100%)}
+.slide.active{display:block;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.slide-inner{max-width:1180px;margin:auto;min-height:100%}
+.kicker{display:inline-block;color:var(--green);font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(30px,4vw,52px);line-height:1.04;color:var(--dark);margin:0 0 18px}
+h3{color:var(--dark);margin-top:0}
+p{font-size:16px;line-height:1.72;color:#36544b}
+.lead{font-size:18px;max-width:900px}
+.quote{border-left:5px solid var(--accent);padding:15px 20px;background:#f2f6df;border-radius:0 12px 12px 0;margin:22px 0;font-style:italic}
+.controls{position:fixed;right:28px;bottom:22px;display:flex;gap:8px;z-index:30}
+.controls button{border:0;background:var(--dark);color:white;border-radius:10px;width:42px;height:42px;cursor:pointer;box-shadow:0 7px 20px rgba(16,73,56,.2)}
+.controls button:hover{background:var(--green)}
+.counter{position:fixed;right:130px;bottom:34px;color:var(--muted);font-size:12px;z-index:30}
+
+/* cover */
+.cover{background:radial-gradient(circle at 80% 20%,rgba(147,192,31,.25),transparent 28%),linear-gradient(135deg,var(--dark),#1b7259)}
+.cover .slide-inner{display:flex;align-items:center}
+.cover h2,.cover p,.cover .kicker{color:white}
+.cover h2{font-size:clamp(48px,7vw,92px);max-width:850px}
+.cover .kicker{color:var(--light)}
+.cover-card{margin-top:30px;padding:18px 22px;border:1px solid rgba(255,255,255,.2);border-radius:16px;background:rgba(255,255,255,.08);max-width:650px}
+.cover-card div{font-size:13px;color:rgba(255,255,255,.85);margin:5px 0}
+.cover-decoration{position:absolute;right:7%;bottom:10%;width:260px;height:260px;border:1px solid rgba(255,255,255,.2);border-radius:50%}
+.cover-decoration:before,.cover-decoration:after{content:"";position:absolute;border:1px solid rgba(209,222,140,.45);border-radius:50%;inset:32px}
+.cover-decoration:after{inset:72px}
+
+/* common cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.card{background:white;border-radius:18px;padding:24px;box-shadow:var(--shadow);border:1px solid #e5eeea}
+.card .icon{width:48px;height:48px;border-radius:14px;background:var(--mid);color:white;display:grid;place-items:center;font-size:23px;margin-bottom:18px}
+.card h3{font-size:19px;margin-bottom:8px}
+.card p{font-size:14px;margin-bottom:0}
+.callout{background:var(--light);padding:22px;border-radius:18px;margin-top:24px;color:var(--dark)}
+.callout strong{display:block;font-size:18px;margin-bottom:6px}
+
+/* carousel */
+.section-head{background:var(--light);padding:13px 18px;border-radius:10px;color:var(--dark);font-weight:900;margin-bottom:25px}
+.carousel{display:grid;grid-template-columns:55px 1fr 55px;align-items:center;gap:14px;margin-top:35px}
+.carousel-arrow{width:48px;height:48px;border:0;border-radius:50%;background:var(--accent);color:var(--dark);font-size:22px;cursor:pointer}
+.carousel-window{overflow:hidden}
+.carousel-track{display:flex;transition:transform .5s ease}
+.carousel-card{min-width:100%;padding:34px;border-radius:22px;color:white;min-height:280px;display:flex;flex-direction:column;justify-content:center}
+.carousel-card h3{color:white;font-size:29px}
+.carousel-card p{color:rgba(255,255,255,.88);max-width:760px}
+.bg1{background:var(--mid)} .bg2{background:var(--teal)} .bg3{background:var(--green)}
+.tooltip{margin-top:16px;padding:14px 16px;background:#f1f5f3;border-radius:10px;color:var(--dark);font-size:13px;display:none}
+.tooltip.show{display:block}
+
+/* wheel */
+.wheel-layout{display:grid;grid-template-columns:420px 1fr;gap:50px;align-items:center;margin-top:20px}
+.wheel{width:380px;height:380px;border-radius:50%;position:relative;margin:auto;transform:rotate(-30deg);box-shadow:var(--shadow);overflow:hidden}
+.segment{position:absolute;width:100%;height:100%;clip-path:polygon(50% 50%,0 0,100% 0);display:flex;justify-content:center;align-items:flex-start;padding-top:50px;color:white;font-weight:900;cursor:pointer;transition:.25s}
+.segment span{transform:rotate(30deg);font-size:19px}
+.segment:hover{filter:brightness(1.12)}
+.personal{background:var(--mid);transform:rotate(0deg)}
+.academic{background:var(--teal);transform:rotate(120deg)}
+.professional{background:var(--green);transform:rotate(240deg)}
+.wheel-center{position:absolute;z-index:5;inset:105px;border-radius:50%;background:var(--light);display:grid;place-items:center;text-align:center;color:var(--dark);font-weight:900;font-size:24px;box-shadow:0 0 0 12px rgba(255,255,255,.55)}
+.context-panel{background:var(--light);border-radius:20px;padding:26px;min-height:280px;color:var(--dark)}
+.context-panel h3{font-size:28px}
+.context-panel li{margin:10px 0;line-height:1.45}
+
+/* traffic */
+.traffic{display:grid;grid-template-columns:180px 1fr;gap:50px;align-items:center;max-width:900px;margin:35px auto}
+.lights{width:145px;padding:22px 15px;background:#1c2c28;border-radius:70px;display:flex;flex-direction:column;gap:18px;align-items:center;box-shadow:var(--shadow)}
+.light{width:72px;height:72px;border-radius:50%;opacity:.25;cursor:pointer;border:4px solid rgba(255,255,255,.1);transition:.25s}
+.light.on{opacity:1;box-shadow:0 0 30px currentColor}
+.red{background:var(--red);color:var(--red)} .yellow{background:var(--yellow);color:var(--yellow)} .green-light{background:var(--accent);color:var(--accent)}
+.traffic-info{background:#fff;border-radius:20px;padding:30px;box-shadow:var(--shadow)}
+.traffic-info h3{font-size:25px}
+
+/* cycle */
+.cycle{display:flex;justify-content:center;align-items:center;gap:20px;margin:55px 0}
+.cycle-item{width:220px;height:180px;border-radius:22px;padding:24px;color:white;display:flex;flex-direction:column;justify-content:center;cursor:pointer;box-shadow:var(--shadow);transition:.25s}
+.cycle-item:hover{transform:translateY(-7px)}
+.cycle-item h3{color:white;margin:10px 0 5px}
+.cycle-item p{color:white;font-size:13px;line-height:1.45}
+.cycle-arrow{font-size:30px;color:var(--light);font-weight:900}
+
+/* flip */
+.flip-wrap{display:flex;justify-content:center;margin:35px auto}
+.flip{width:min(650px,90vw);height:350px;perspective:1200px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:45px;box-shadow:var(--shadow)}
+.front{background:var(--dark);color:white}
+.front h3{color:white;font-size:28px}
+.front p{color:white;font-size:25px;font-weight:800}
+.back{background:var(--light);color:var(--dark);transform:rotateY(180deg);align-items:flex-start;text-align:left}
+.back h3{font-size:25px}
+.back li{margin:12px 0}
+
+/* conclusion/reference */
+.conclusion{display:grid;place-items:center;text-align:center;min-height:75vh}
+.conclusion .balance{font-size:72px;color:var(--light);margin-bottom:18px}
+.references{columns:2;column-gap:45px;margin-top:30px}
+.ref{break-inside:avoid;margin-bottom:18px;font-size:14px;line-height:1.6;color:#36544b}
+.credits{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:25px}
+.credit{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.credit strong{color:var(--dark);display:block;margin-bottom:8px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(10,35,27,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+.modal.show{display:flex}
+.modal-box{max-width:680px;width:100%;background:var(--light);color:var(--dark);border-radius:20px;padding:30px;box-shadow:0 25px 80px rgba(0,0,0,.25);animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:none;opacity:1}}
+.modal-box h3{font-size:25px;margin-top:0}
+.modal-box p,.modal-box li{color:var(--dark)}
+.close{float:right;border:0;background:var(--dark);color:white;width:34px;height:34px;border-radius:50%;cursor:pointer}
+
+/* mobile */
+@media(max-width:900px){
+  body{overflow:auto}
+  .app{display:block;height:auto}
+  .sidebar{position:fixed;top:0;left:0;right:0;height:auto;padding:10px 12px}
+  .brand{margin:0 0 8px}
+  .brand-mark{width:34px;height:34px}
+  .nav{flex-direction:row;overflow-x:auto}
+  .nav button{white-space:nowrap;padding:8px 10px;font-size:11px}
+  .progress-wrap,.sidebar-footer{display:none}
+  .main{padding-top:104px;height:auto;min-height:100vh}
+  .slide{position:relative;min-height:calc(100vh - 104px);padding:40px 6vw 100px}
+  .grid,.credits{grid-template-columns:1fr}
+  .wheel-layout{grid-template-columns:1fr;gap:25px}
+  .wheel{width:300px;height:300px}
+  .wheel-center{inset:84px}
+  .traffic{grid-template-columns:1fr;justify-items:center}
+  .cycle{flex-direction:column}
+  .cycle-arrow{transform:rotate(90deg)}
+  .references{columns:1}
+  .counter{right:80px;bottom:35px}
+}
+@media(max-width:560px){
+  h2{font-size:34px}
+  .cover h2{font-size:46px}
+  .carousel{grid-template-columns:38px 1fr 38px}
+  .carousel-arrow{width:38px;height:38px}
+}
+</style>
+
+<style>
+/* ===== MODO GENIALLY 16:9 ===== */
+html,body{width:100%;height:100%;overflow:hidden;background:#eef4f1}
+.app{display:block;width:100%;height:100vh}
+.sidebar{
+  position:fixed;left:0;right:0;top:0;height:54px;
+  padding:7px 14px;display:flex;flex-direction:row;align-items:center;
+  background:rgba(16,73,56,.97);z-index:50;
+}
+.brand{margin:0;width:235px;flex:none}
+.brand-mark{width:36px;height:36px;border-radius:9px}
+.brand h1{font-size:12px}
+.brand small{font-size:9px}
+.progress-wrap{width:160px;margin:0 16px 0 0}
+.nav{
+  flex:1;display:flex;flex-direction:row;gap:4px;overflow-x:auto;
+  scrollbar-width:none
+}
+.nav::-webkit-scrollbar{display:none}
+.nav button{white-space:nowrap;padding:8px 10px;font-size:10px}
+.sidebar-footer{display:none}
+.main{height:100vh;width:100%}
+.slide{
+  inset:0;padding:80px 7vw 70px;
+  overflow:auto;
+}
+.slide-inner{max-width:1180px}
+.controls{right:18px;bottom:14px}
+.counter{right:118px;bottom:27px}
+.cover .slide-inner{min-height:calc(100vh - 140px)}
+.cover-decoration{right:8%;bottom:15%}
+@media(max-width:900px){
+  .sidebar{height:54px}
+  .brand{width:180px}
+  .progress-wrap{display:block;width:100px}
+  .slide{min-height:100vh;padding:76px 5vw 70px}
+  .main{padding-top:0;height:100vh}
+}
+</style>
+
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">AT</div>
+    <div><h1>Administración<br>del Tiempo</h1><small>Presentación interactiva</small></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span>PROGRESO</span><span id="progressText">0%</span></div>
+    <div class="progress"><span id="progressBar"></span></div>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="sidebar-footer">
+    AD.01.04.01<br>
+    Importancia de la administración del tiempo
+  </div>
+</aside>
+
+<main class="main">
+<div class="slides">
+
+<section class="slide cover active" data-title="Portada">
+  <div class="slide-inner">
+    <div>
+      <span class="kicker">Presentación electrónica interactiva</span>
+      <h2>Administración<br>del Tiempo</h2>
+      <p class="lead">Importancia de la administración del tiempo</p>
+      <div class="cover-card">
+        <div><strong>Nomenclatura:</strong> AD.01.04.01</div>
+        <div><strong>Actividad:</strong> Importancia de la administración del tiempo</div>
+      </div>
+    </div>
+    <div class="cover-decoration"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Índice">
+<div class="slide-inner">
+<span class="kicker">Contenido</span><h2>Ruta de aprendizaje</h2>
+<p class="lead">Explora cada apartado para comprender por qué administrar el tiempo es una competencia estratégica y transversal.</p>
+<div class="grid">
+  <div class="card"><div class="icon">01</div><h3>Introducción</h3><p>Por qué importa la administración del tiempo más allá de la productividad.</p></div>
+  <div class="card"><div class="icon">02</div><h3>Mundo contemporáneo</h3><p>Hiperconectividad, demandas simultáneas y aceleración del cambio.</p></div>
+  <div class="card"><div class="icon">03</div><h3>Tres contextos</h3><p>Importancia personal, académica y profesional.</p></div>
+  <div class="card"><div class="icon">04</div><h3>Costo de ausencia</h3><p>Costo de oportunidad, desperdicio y pérdida de tiempo de vida.</p></div>
+  <div class="card"><div class="icon">05</div><h3>Metacompetencia</h3><p>Cómo la gestión temporal habilita otras competencias.</p></div>
+  <div class="card"><div class="icon">06</div><h3>Perspectiva integradora</h3><p>Administrar el tiempo es administrar la propia vida.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Objetivo">
+<div class="slide-inner">
+<span class="kicker">Objetivo por tema</span><h2>¿Qué aprenderás?</h2>
+<div class="callout">
+<strong>Al finalizar esta actividad podrás explicar:</strong>
+<p>La importancia estratégica de la administración del tiempo en el logro de objetivos personales, académicos y profesionales, identificando el costo de su ausencia y reconociendo su carácter de metacompetencia para el liderazgo personal.</p>
+</div>
+<div class="quote">La pregunta central es: ¿por qué importa la administración del tiempo?</div>
+</div>
+</section>
+
+<section class="slide" data-title="Introducción">
+<div class="slide-inner">
+<span class="kicker">Introducción</span><h2>¿Por qué importa el tiempo?</h2>
+<p>A lo largo de las actividades de desarrollo anteriores se han analizado el <strong>concepto, los beneficios y las estrategias</strong> de la administración del tiempo. Cada elemento aporta un ángulo diferente para comprender esta competencia.</p>
+<p>La importancia de la administración del tiempo no se reduce a un argumento de productividad. Implica una reflexión más profunda sobre la relación que las personas tienen con su tiempo, con sus metas y con su propia vida.</p>
+<div class="quote">Drucker (1967) lo planteó con precisión: quien no administra su tiempo no puede administrar nada más, porque el tiempo es la condición de posibilidad de toda acción humana.</div>
+<p>En esta actividad explicarás la <strong>importancia estratégica</strong> de la administración del tiempo en el logro de objetivos personales, académicos y profesionales.</p>
+</div>
+</section>
+
+<section class="slide" data-title="Mundo contemporáneo">
+<div class="slide-inner">
+<div class="section-head">Un imperativo renovado</div>
+<span class="kicker">La administración del tiempo en el mundo contemporáneo</span>
+<h2>Más necesaria. Más difícil.</h2>
+<p>La relevancia de la administración del tiempo se ha intensificado. El entorno contemporáneo presenta condiciones que hacen la gestión del tiempo más necesaria y, al mismo tiempo, más difícil.</p>
+<div class="carousel">
+<button class="carousel-arrow" onclick="moveCarousel(-1)">‹</button>
+<div class="carousel-window"><div class="carousel-track" id="carouselTrack">
+  <div class="carousel-card bg1" data-tip="Aeon y Aguinis (2017) documentan que la hiperconectividad genera disponibilidad permanente, fragmenta la concentración y multiplica las interrupciones.">
+    <h3>Hiperconectividad digital</h3><p>La disponibilidad permanente fragmenta la concentración y multiplica las interrupciones.</p><button class="detail-btn" onclick="showTip(0)" style="width:max-content;border:0;border-radius:8px;padding:10px 14px;background:#fff;color:#104938;font-weight:800;cursor:pointer">Ver sustento</button>
+  </div>
+  <div class="carousel-card bg2" data-tip="Aeon y Aguinis (2017) señalan que las demandas laborales, académicas, familiares y sociales exigen gestionar un volumen de responsabilidades que supera la improvisación.">
+    <h3>Multiplicación de demandas</h3><p>Responsabilidades laborales, académicas, familiares y sociales compiten por el mismo recurso: el tiempo.</p><button class="detail-btn" onclick="showTip(1)" style="width:max-content;border:0;border-radius:8px;padding:10px 14px;background:#fff;color:#104938;font-weight:800;cursor:pointer">Ver sustento</button>
+  </div>
+  <div class="carousel-card bg3" data-tip="Aeon y Aguinis (2017) relacionan la aceleración del cambio con la incertidumbre de prioridades y la necesidad de revisar constantemente la asignación del tiempo.">
+    <h3>Aceleración del cambio organizacional</h3><p>La incertidumbre sobre las prioridades obliga a revisar constantemente cómo se asigna el tiempo.</p><button class="detail-btn" onclick="showTip(2)" style="width:max-content;border:0;border-radius:8px;padding:10px 14px;background:#fff;color:#104938;font-weight:800;cursor:pointer">Ver sustento</button>
+  </div>
+</div></div>
+<button class="carousel-arrow" onclick="moveCarousel(1)">›</button>
+</div>
+<div id="carouselTip" class="tooltip"></div>
+<div class="callout"><strong>Idea clave</strong>No administrar el tiempo en este entorno no es una opción neutral: es una decisión que tiene costos concretos y mensurables.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Contextos">
+<div class="slide-inner">
+<span class="kicker">Importancia en los tres contextos</span><h2>Personal · Académico · Profesional</h2>
+<div class="wheel-layout">
+  <div class="wheel">
+    <div class="segment personal" onclick="contextInfo('personal')"><span>Personal</span></div>
+    <div class="segment academic" onclick="contextInfo('academic')"><span>Académico</span></div>
+    <div class="segment professional" onclick="contextInfo('professional')"><span>Profesional</span></div>
+    <div class="wheel-center">Importancia</div>
+  </div>
+  <div class="context-panel" id="contextPanel">
+    <h3>Elige un contexto</h3>
+    <p>Haz clic en uno de los segmentos de la rueda para explorar sus puntos clave.</p>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Objetivos personales">
+<div class="slide-inner">
+<span class="kicker">Contexto personal</span><h2>Tiempo, metas y calidad de vida</h2>
+<p>El tiempo es el <strong>recurso a través del cual se convierten las metas en realidad</strong>. Ningún objetivo se alcanza sin una asignación deliberada de tiempo para trabajar en él.</p>
+<p>Covey (2015) denomina <strong>tiranía de lo urgente</strong> al fenómeno en que las demandas inmediatas desplazan actividades importantes pero no urgentes, precisamente las que generan resultados significativos a largo plazo.</p>
+<p>Tracy (2014) establece una relación directa entre administración del tiempo y calidad de vida: las personas que gestionan bien su tiempo tienen más tiempo porque eliminan desperdicios, se concentran en lo importante y generan más valor por hora.</p>
+<div class="callout"><strong>Resultado</strong>Más espacio para desarrollo personal, descanso y relaciones significativas.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Desarrollo académico">
+<div class="slide-inner">
+<span class="kicker">Contexto académico</span><h2>Aprender requiere continuidad</h2>
+<div class="grid">
+<div class="card"><div class="icon">A</div><h3>Sostenibilidad del aprendizaje</h3><p>Leer, practicar, reflexionar y aplicar de manera sostenida favorece una comprensión integrada y duradera.</p></div>
+<div class="card"><div class="icon">R</div><h3>Autonomía y autorregulación</h3><p>En modalidades virtuales y mixtas, el estudiante debe organizarse, avanzar y cumplir plazos de manera autónoma.</p></div>
+<div class="card"><div class="icon">L</div><h3>Preparación laboral</h3><p>Organizar el trabajo, priorizar sin supervisión constante y cumplir compromisos son competencias transferibles al entorno profesional.</p></div>
+</div>
+<div class="quote">Garzón Umerenkova y Gil Flores (2018) identificaron la gestión del tiempo como uno de los predictores consistentes del éxito académico universitario.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Ámbito profesional">
+<div class="slide-inner">
+<span class="kicker">Contexto profesional</span><h2>Una ventaja competitiva individual y organizacional</h2>
+<div class="grid">
+<div class="card"><div class="icon">↗</div><h3>Ventaja competitiva</h3><p>Drucker (1967) plantea que el profesional efectivo concentra su tiempo en las pocas actividades que generan resultados significativos.</p></div>
+<div class="card"><div class="icon">◎</div><h3>Efectividad organizacional</h3><p>Una gestión eficaz favorece ciclos de producción más cortos, menos errores por premura y una cultura más planificada.</p></div>
+<div class="card"><div class="icon">♥</div><h3>Prevención del agotamiento</h3><p>Macan (1994) relaciona la falta de estrategias de gestión temporal con mayor vulnerabilidad al agotamiento profesional.</p></div>
+</div>
+<div class="callout"><strong>Administrar el tiempo también es autocuidado profesional.</strong> La organización temporal contribuye a mantener control, consistencia y previsibilidad.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Costo">
+<div class="slide-inner">
+<span class="kicker">El costo de no administrar el tiempo</span><h2>Lo que haces… y lo que dejas de hacer</h2>
+<p>El <strong>costo de oportunidad</strong> es el valor de la mejor alternativa a la que se renuncia al tomar una decisión. Aplicado al tiempo, cada hora invertida en actividades de bajo valor es una hora que no se invierte en actividades de alto impacto.</p>
+<div class="traffic">
+  <div class="lights">
+    <div class="light red on" onclick="traffic(0)"></div>
+    <div class="light yellow" onclick="traffic(1)"></div>
+    <div class="light green-light" onclick="traffic(2)"></div>
+  </div>
+  <div class="traffic-info" id="trafficInfo">
+    <h3>Costo de oportunidad temporal</h3>
+    <p>Tiempo invertido en lo urgente a costa de lo importante.</p>
+    <small><em>Aeon y Aguinis (2017)</em></small>
+  </div>
+</div>
+<div class="quote">La falta de planificación genera pérdida acumulada de oportunidades de crecimiento, aprendizaje y desarrollo que nunca se recuperan, porque el tiempo es irrecuperable.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Desperdicio">
+<div class="slide-inner">
+<span class="kicker">Desperdicio medible</span><h2>El tiempo también se pierde</h2>
+<p>Tracy (2014) estima que la mayoría de los trabajadores desperdicia entre un <strong>30% y un 50%</strong> de su tiempo de trabajo en actividades que no contribuyen a sus objetivos principales.</p>
+<div class="grid">
+<div class="card"><div class="icon">30%</div><h3>Umbral inferior</h3><p>Una parte significativa de la jornada puede desviarse de los objetivos principales.</p></div>
+<div class="card"><div class="icon">50%</div><h3>Umbral superior</h3><p>El desperdicio acumulado puede representar meses enteros de productividad por año.</p></div>
+<div class="card"><div class="icon">∞</div><h3>Tiempo irrecuperable</h3><p>La pérdida no es únicamente eficiencia: es tiempo de vida que no puede recuperarse.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Metacompetencia">
+<div class="slide-inner">
+<span class="kicker">La administración del tiempo como metacompetencia</span><h2>Una habilidad que habilita las demás</h2>
+<p>Una <strong>metacompetencia</strong> es una habilidad que habilita el desarrollo de otras. Quien no gestiona su tiempo tiene dificultades para estudiar con regularidad, practicar una habilidad, mantener compromisos o avanzar en proyectos de largo plazo.</p>
+<div class="cycle">
+  <div class="cycle-item bg1" onclick="cycleInfo(0)"><div>🧠</div><h3>Metacompetencia</h3><p>Habilita todas las demás competencias.</p></div>
+  <div class="cycle-arrow">→</div>
+  <div class="cycle-item bg2" onclick="cycleInfo(1)"><div>🧭</div><h3>Liderazgo personal</h3><p>Dirigirse a uno mismo con claridad.</p></div>
+  <div class="cycle-arrow">→</div>
+  <div class="cycle-item bg3" onclick="cycleInfo(2)"><div>🏆</div><h3>Ventaja competitiva</h3><p>Resultados superiores con igualdad de talento.</p></div>
+</div>
+<div class="callout"><strong>Idea central</strong>Administrar bien el tiempo es un acto de autoresponsabilidad y autoridad sobre la propia vida.</div>
+</div>
+</section>
+
+<section class="slide" data-title="Perspectiva integradora">
+<div class="slide-inner">
+<span class="kicker">Perspectiva integradora</span><h2>Administrar el tiempo es administrar la propia vida</h2>
+<p>La dimensión más significativa de esta competencia va más allá de la productividad. Administrar el tiempo es, en última instancia, <strong>tomar decisiones sobre cómo vivir</strong>.</p>
+<div class="flip-wrap">
+  <div class="flip" id="flipCard" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="face front">
+        <div style="font-size:55px">⌛</div>
+        <h3>Drucker (1967)</h3>
+        <p>“Sin gestión del tiempo, ningún otro recurso puede ser gestionado.”</p>
+        <small>Haz clic para voltear</small>
+      </div>
+      <div class="face back">
+        <h3>La brújula y el reloj</h3>
+        <ul>
+          <li><strong>Tiempo finito:</strong> recurso no renovable.</li>
+          <li><strong>Inversión del tiempo:</strong> construcción de la historia personal.</li>
+          <li><strong>Administrar el tiempo:</strong> elegir conscientemente quién se quiere ser.</li>
+        </ul>
+        <small>Olivo (2020); Covey (2015)</small>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Conclusión">
+<div class="slide-inner conclusion">
+<div>
+<div class="balance">⚖</div>
+<span class="kicker">Conclusión general</span>
+<h2>El tiempo es un recurso no renovable</h2>
+<p class="lead">Su administración eficaz es condición de posibilidad del logro y el desarrollo; su ausencia tiene costos concretos; y su gestión constituye una expresión práctica del liderazgo personal.</p>
+<div class="grid" style="text-align:left">
+<div class="card"><h3>01 · Recurso no renovable</h3><p>El tiempo permite convertir las metas humanas en realidad.</p></div>
+<div class="card"><h3>02 · Costos concretos</h3><p>Estrés, oportunidades perdidas, resultados deficientes y burnout.</p></div>
+<div class="card"><h3>03 · Metacompetencia</h3><p>Potencia el desarrollo de otras habilidades y el liderazgo personal.</p></div>
+</div>
+<p style="margin-top:30px">Este material proporciona el sustento teórico para diseñar y justificar un plan personal de administración del tiempo.</p>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Referencias">
+<div class="slide-inner">
+<span class="kicker">Referencias</span><h2>Bibliografía · APA 7</h2>
+<div class="references">
+<div class="ref">Aeon, B., &amp; Aguinis, H. (2017). It’s about time: New perspectives and insights on time management. <em>Academy of Management Perspectives, 31</em>(4), 309–330.</div>
+<div class="ref">Covey, S. R. (2015). <em>Los 7 hábitos de la gente altamente efectiva</em>. Paidós. (Obra original publicada en 1989).</div>
+<div class="ref">Drucker, P. F. (1967). <em>The effective executive</em>. Harper &amp; Row.</div>
+<div class="ref">Garzón Umerenkova, A., &amp; Gil Flores, J. (2018). El papel de la gestión del tiempo en el rendimiento académico. <em>Universitas Psychologica, 17</em>(2), 1–11.</div>
+<div class="ref">Jones, O. (2023). <em>Productividad y gestión del tiempo: Cómo optimizar su tiempo y alcanzar los máximos resultados</em>. Tektime.</div>
+<div class="ref">Macan, T. H. (1994). Time management: Test of a process model. <em>Journal of Applied Psychology, 79</em>(3), 381–391.</div>
+<div class="ref">Olivo, E. (2020). <em>Administración efectiva del tiempo: Gana la carrera al reloj</em>. Native Publisher.</div>
+<div class="ref">Tracy, B. (2014). <em>Time management</em>. AMACOM.</div>
+</div>
+</div>
+</section>
+
+<section class="slide" data-title="Créditos">
+<div class="slide-inner">
+<span class="kicker">Créditos</span><h2>Equipo de desarrollo</h2>
+<div class="credits">
+<div class="credit"><strong>Creación de contenido</strong>Clarisa Fernández Ruiz<br>Universidad Tecnológica del Sur de Sonora</div>
+<div class="credit"><strong>Creación de contenido</strong>Ángel Rivera Genina<br>Universidad Tecnológica del Sur de Sonora</div>
+<div class="credit"><strong>Revisión de contenido</strong>Rodrigo Efrén Galván Nava<br>Universidad Tecnológica Santa Catarina</div>
+<div class="credit"><strong>Diseño instruccional</strong>Humberto Chávez Cadena<br>Universidad Tecnológica Santa Catarina</div>
+<div class="credit"><strong>Diseño gráfico y multimedia</strong>Joel Alberto Reyes Barcelo<br>Universidad Tecnológica del Sur de Sonora</div>
+</div>
+<div class="callout" style="margin-top:35px"><strong>AD.01.04.01</strong>Importancia de la administración del tiempo</div>
+</div>
+</section>
+
+</div>
+
+<div class="counter" id="counter">1 / 15</div>
+<div class="controls">
+<button onclick="prevSlide()" aria-label="Anterior">←</button>
+<button onclick="nextSlide()" aria-label="Siguiente">→</button>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+<div class="modal-box"><button class="close" onclick="closeModal()">×</button><div id="modalContent"></div></div>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const nav=document.getElementById('nav');
+let current=0;
+let carouselIndex=0;
+
+slides.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.textContent=(String(i+1).padStart(2,'0'))+'  '+s.dataset.title;
+  b.onclick=()=>goTo(i);
+  nav.appendChild(b);
+});
+
+function goTo(i){
+  current=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,n)=>s.classList.toggle('active',n===current));
+  [...nav.children].forEach((b,n)=>b.classList.toggle('active',n===current));
+  document.getElementById('counter').textContent=`${current+1} / ${slides.length}`;
+  const pct=(current/(slides.length-1))*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressText').textContent=Math.round(pct)+'%';
+  slides[current].scrollTop=0;
+}
+function nextSlide(){goTo(current+1)}
+function prevSlide(){goTo(current-1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='PageUp') prevSlide();
+  if(e.key==='Home') goTo(0);
+  if(e.key==='End') goTo(slides.length-1);
+  if(e.key==='Escape') closeModal();
+});
+
+/* carousel */
+function moveCarousel(dir){
+  carouselIndex=(carouselIndex+dir+3)%3;
+  document.getElementById('carouselTrack').style.transform=`translateX(-${carouselIndex*100}%)`;
+  document.getElementById('carouselTip').classList.remove('show');
+}
+function showTip(i){
+  const tips=[
+    'Aeon y Aguinis (2017) documentan que la hiperconectividad genera disponibilidad permanente, fragmenta la concentración y multiplica las interrupciones.',
+    'Aeon y Aguinis (2017) señalan que las demandas laborales, académicas, familiares y sociales exigen gestionar un volumen de responsabilidades para el que la improvisación resulta insuficiente.',
+    'Aeon y Aguinis (2017) relacionan la aceleración del cambio con la incertidumbre de prioridades y la necesidad de revisar constantemente la asignación del tiempo.'
+  ];
+  const box=document.getElementById('carouselTip');
+  box.textContent=tips[i]; box.classList.add('show');
+}
+
+/* context wheel */
+const contextData={
+ personal:{
+  title:'Personal',
+  items:['Convierte metas en realidad mediante asignación deliberada de tiempo.','Ayuda a romper la tiranía de lo urgente.','Permite recuperar iniciativa sobre el propio tiempo.','Favorece desarrollo personal, descanso y relaciones significativas.'],
+  ref:'Covey (2015); Tracy (2014)'
+ },
+ academic:{
+  title:'Académico',
+  items:['Favorece un proceso sostenido de lectura, práctica, reflexión y aplicación.','Fortalece autonomía y autorregulación en modalidades virtuales y mixtas.','Reduce la dependencia de la memorización de emergencia.','Desarrolla competencias transferibles al mercado laboral.'],
+  ref:'Garzón Umerenkova y Gil Flores (2018); Aeon y Aguinis (2017); Jones (2023)'
+ },
+ professional:{
+  title:'Profesional',
+  items:['Concentra el tiempo en actividades de alto impacto.','Contribuye a ciclos de producción más cortos y menos errores por premura.','Favorece cumplimiento, confiabilidad y oportunidades profesionales.','Funciona también como estrategia de autocuidado profesional.'],
+  ref:'Drucker (1967); Tracy (2014); Jones (2023); Macan (1994)'
+ }
+};
+function contextInfo(key){
+ const d=contextData[key];
+ document.getElementById('contextPanel').innerHTML=`<h3>${d.title}</h3><ul>${d.items.map(x=>`<li>${x}</li>`).join('')}</ul><small><em>${d.ref}</em></small>`;
+}
+
+/* traffic */
+const trafficData=[
+ ['Costo de oportunidad temporal','Tiempo invertido en lo urgente a costa de lo importante.','Aeon y Aguinis (2017)'],
+ ['Desperdicio medible','Tracy (2014) estima que la mayoría de los trabajadores desperdicia entre 30% y 50% de su tiempo de trabajo en actividades que no contribuyen a sus objetivos principales.','Tracy (2014)'],
+ ['Administración efectiva','Recuperación de tiempo productivo mediante concentración, eliminación del desperdicio y asignación deliberada del tiempo.','Tracy (2014)']
+];
+function traffic(i){
+ document.querySelectorAll('.light').forEach((x,n)=>x.classList.toggle('on',n===i));
+ const d=trafficData[i];
+ document.getElementById('trafficInfo').innerHTML=`<h3>${d[0]}</h3><p>${d[1]}</p><small><em>${d[2]}</em></small>`;
+}
+
+/* modal / cycle */
+function showModal(title,text){
+ document.getElementById('modalContent').innerHTML=`<h3>${title}</h3>${text}`;
+ document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function cycleInfo(i){
+ const data=[
+  ['Metacompetencia','La administración del tiempo habilita el desarrollo de otras competencias: estudiar, practicar, mantener compromisos y avanzar en proyectos de largo plazo. <br><br><em>Tracy (2014)</em>'],
+  ['Liderazgo personal','Covey (2015) vincula la administración del tiempo con la capacidad de dirigirse a uno mismo con intención y sistematicidad. Es un acto de autoresponsabilidad. <br><br><em>Covey (2015)</em>'],
+  ['Ventaja competitiva','Drucker (1967) plantea que el profesional efectivo concentra su tiempo en las pocas actividades que generan resultados significativos. <br><br><em>Drucker (1967)</em>']
+ ];
+ showModal(data[i][0],'<p>'+data[i][1]+'</p>');
+}
+goTo(0);
+</script>
+
+<script>
+/* API opcional para incrustación en Genially */
+window.addEventListener('message', function(event){
+  const d = event.data || {};
+  if(d.action === 'next') nextSlide();
+  if(d.action === 'previous') prevSlide();
+  if(d.action === 'goTo' && Number.isInteger(d.slide)) goTo(d.slide);
+  if(d.action === 'closeModal') closeModal();
+});
+window.parent !== window && window.parent.postMessage(
+  {type:'administracion-tiempo-ready', slides:slides.length},
+  '*'
+);
+</script>
+
+</body>
+</html>
