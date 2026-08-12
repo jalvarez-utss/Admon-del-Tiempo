@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tercera Estrategia: Priorización de Tareas</title>
+    <!-- FontAwesome para Íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-q1: #156049;
+            --color-q2: #279371;
+            --color-q3: #3F9089;
+            --color-q4: #104938;
+            --color-accent: #93C01F;
+            --color-bg-modal: #D1DE8C;
+            --color-text-modal: #104938;
+            --color-abc-bg: #F4F9F4;
+            --font-main: 'Poppins', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #f8faf9;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .header-title {
+            text-align: center;
+            color: var(--color-q4);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            text-align: center;
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* --- Estructura de la Matriz --- */
+        .matrix-wrapper {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .axis-label {
+            font-weight: 700;
+            color: var(--color-q4);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .axis-y-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .axis-y {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            padding-right: 10px;
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+            font-size: 0.8rem;
+        }
+
+        .axis-x {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 8px;
+            padding-left: 30px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+            height: 380px;
+        }
+
+        .quadrant {
+            border-radius: 12px;
+            padding: 20px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            /* Animación de entrada */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .quadrant:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+        }
+
+        .q1 { background-color: var(--color-q1); animation-delay: 0.1s; }
+        .q2 { background-color: var(--color-q2); animation-delay: 0.3s; }
+        .q3 { background-color: var(--color-q3); animation-delay: 0.5s; }
+        .q4 { background-color: var(--color-q4); animation-delay: 0.7s; }
+
+        .quadrant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quadrant-number {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .quadrant-icon {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .quadrant-body h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .quadrant-body p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .click-hint {
+            font-size: 0.75rem;
+            text-align: right;
+            opacity: 0.8;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* --- Método ABC --- */
+        .abc-section {
+            background-color: var(--color-abc-bg);
+            border: 2px solid var(--color-q2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .abc-title {
+            color: var(--color-q4);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .abc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .abc-card {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--color-q2);
+        }
+
+        .abc-badge {
+            display: inline-block;
+            font-weight: 700;
+            color: #fff;
+            background: var(--color-q2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-bottom: 8px;
+        }
+
+        .abc-card p {
+            font-size: 0.85rem;
+            color: #444;
+            line-height: 1.4;
+        }
+
+        /* --- Ventana Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: var(--color-bg-modal);
+            color: var(--color-text-modal);
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 100%;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text-modal);
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-q1);
+            padding-bottom: 8px;
+        }
+
+        .modal-body {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-action {
+            background: rgba(16, 73, 56, 0.15);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* --- Animaciones --- */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .matrix-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 1fr);
+                height: auto;
+            }
+            .quadrant {
+                min-height: 140px;
+            }
+            .axis-x, .axis-y {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="header-title">Tercera Estrategia: Priorización de Tareas</h2>
+    <p class="header-subtitle">
+        Si la planificación responde a <em>¿qué debo hacer?</em>, la priorización responde a <em>¿qué debo hacer primero?</em>.
+        Explora la Matriz de Covey (2015) haciendo clic en cada cuadrante.
+    </p>
+
+    <!-- Matriz 2x2 -->
+    <div class="matrix-wrapper">
+        <div class="axis-x axis-label">
+            <span>&larr; URGENTE</span>
+            <span>NO URGENTE &rarr;</span>
+        </div>
+
+        <div class="axis-y-container">
+            <div class="axis-y axis-label">
+                <span>NO IMPORTANTE &darr;</span>
+                <span>IMPORTANTE &uarr;</span>
+            </div>
+
+            <div class="matrix-grid">
+                <!-- Cuadrante I -->
+                <div class="quadrant q1" onclick="openModal('q1')">
+                    <div class="quadrant-header">
+                        <span class="quadrant-number">Cuadrante I</span>
+                        <i class="fa-solid fa-triangle-exclamation quadrant-icon"></i>
+                    </div>
+                    <div class="quadrant-body">
+                        <h3>Crisis</h3>
+                        <p>Urgente e Importante</p>
+                    </div>
+                    <div class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Clic para ver detalle</div>
+                </div>
+
+                <!-- Cuadrante II -->
+                <div class="quadrant q2" onclick="openModal('q2')">
+                    <div class="quadrant-header">
+                        <span class="quadrant-number">Cuadrante II</span>
+                        <i class="fa-solid fa-bullseye quadrant-icon"></i>
+                    </div>
+                    <div class="quadrant-body">
+                        <h3>Planificación</h3>
+                        <p>No urgente pero Importante</p>
+                    </div>
+                    <div class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Clic para ver detalle</div>
+                </div>
+
+                <!-- Cuadrante III -->
+                <div class="quadrant q3" onclick="openModal('q3')">
+                    <div class="quadrant-header">
+                        <span class="quadrant-number">Cuadrante III</span>
+                        <i class="fa-solid fa-bell quadrant-icon"></i>
+                    </div>
+                    <div class="quadrant-body">
+                        <h3>Interrupciones</h3>
+                        <p>Urgente pero No importante</p>
+                    </div>
+                    <div class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Clic para ver detalle</div>
+                </div>
+
+                <!-- Cuadrante IV -->
+                <div class="quadrant q4" onclick="openModal('q4')">
+                    <div class="quadrant-header">
+                        <span class="quadrant-number">Cuadrante IV</span>
+                        <i class="fa-solid fa-gamepad quadrant-icon"></i>
+                    </div>
+                    <div class="quadrant-body">
+                        <h3>Evasión</h3>
+                        <p>No urgente y No importante</p>
+                    </div>
+                    <div class="click-hint"><i class="fa-solid fa-hand-pointer"></i> Clic para ver detalle</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Método ABC de Lakein -->
+    <div class="abc-section">
+        <div class="abc-title">
+            <i class="fa-solid fa-list-check"></i>
+            <span>El Método ABC de Lakein (1973)</span>
+        </div>
+        <div class="abc-grid">
+            <div class="abc-card">
+                <span class="abc-badge">A</span>
+                <p><strong>Alta Prioridad:</strong> Tareas más valiosas e importantes con consecuencias significativas si no se realizan. <em>(Regla: Nunca realizar una B o C teniendo una A pendiente)</em>.</p>
+            </div>
+            <div class="abc-card">
+                <span class="abc-badge">B</span>
+                <p><strong>Prioridad Media:</strong> Tareas importantes, pero con consecuencias menores si sufren un retraso moderado.</p>
+            </div>
+            <div class="abc-card">
+                <span class="abc-badge" style="background-color: var(--color-q3);">C</span>
+                <p><strong>Baja Prioridad:</strong> Actividades de escaso valor que podrían eliminarse o delegarse sin mayor impacto en las metas.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Emergente -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="closeModalDirect()">&times;</button>
+        <h3 class="modal-title" id="modalTitle">Título del Cuadrante</h3>
+        <div class="modal-body" id="modalBody">
+            Contenido...
+        </div>
+    </div>
+</div>
+
+<script>
+    const quadrantData = {
+        q1: {
+            title: "Cuadrante I: Crisis (Urgente e Importante)",
+            content: `
+                <p><strong>Descriptor según Covey (2015):</strong> Actividades que requieren atención inmediata y están vinculadas a resultados significativos.</p>
+                <p><strong>Ejemplos:</strong></p>
+                <ul>
+                    <li>Proyectos con fechas de entrega vencidas o inminentes.</li>
+                    <li>Emergencias médicas o personales.</li>
+                    <li>Problemas urgentes en el trabajo o estudio.</li>
+                </ul>
+                <div class="modal-action"><i class="fa-solid fa-bolt"></i> <strong>Recomendación de acción:</strong> Resolver de inmediato (Hacer).</div>
+            `
+        },
+        q2: {
+            title: "Cuadrante II: Planificación y Efectividad (No Urgente pero Importante)",
+            content: `
+                <p><strong>Descriptor según Covey (2015):</strong> Es el cuadrante de la efectividad a largo plazo. Priorizar este cuadrante reduce progresivamente las crisis del Cuadrante I.</p>
+                <p><strong>Ejemplos:</strong></p>
+                <ul>
+                    <li>Planificación estratégica y establecimiento de metas.</li>
+                    <li>Desarrollo de habilidades y preparación académica.</li>
+                    <li>Prevención de problemas y cuidado de la salud.</li>
+                    <li>Construcción de relaciones interpersonales de valor.</li>
+                </ul>
+                <div class="modal-action"><i class="fa-solid fa-calendar-check"></i> <strong>Recomendación de acción:</strong> Decidir cuándo hacerlo y agendarlo (Planificar).</div>
+            `
+        },
+        q3: {
+            title: "Cuadrante III: Interrupciones (Urgente pero No Importante)",
+            content: `
+                <p><strong>Descriptor según Covey (2015):</strong> Generan la ilusión de productividad porque exigen respuesta rápida, pero satisfacen las prioridades de otros, no las propias.</p>
+                <p><strong>Ejemplos:</strong></p>
+                <ul>
+                    <li>Interrupciones telefónicas o mensajes constantes.</li>
+                    <li>Correos electrónicos de bajo valor.</li>
+                    <li>Reuniones imprevistas de poca relevancia.</li>
+                    <li>Peticiones inmediatas de terceros.</li>
+                </ul>
+                <div class="modal-action"><i class="fa-solid fa-user-gear"></i> <strong>Recomendación de acción:</strong> Delegar o automatizar siempre que sea posible.</div>
+            `
+        },
+        q4: {
+            title: "Cuadrante IV: Evasión (No Urgente y No Importante)",
+            content: `
+                <p><strong>Descriptor según Covey (2015):</strong> Actividades que no aportan valor ni satisfacen necesidades urgentes. A menudo son formas de procrastinación o evasión.</p>
+                <p><strong>Ejemplos:</strong></p>
+                <ul>
+                    <li>Uso indiscriminado de redes sociales sin propósito.</li>
+                    <li>Ver televisión o videos por pura evasión.</li>
+                    <li>Actividades triviales de desperdicio de tiempo.</li>
+                </ul>
+                <div class="modal-action"><i class="fa-solid fa-trash-can"></i> <strong>Recomendación de acción:</strong> Eliminar o minimizar radicalmente.</div>
+            `
+        }
+    };
+
+    function openModal(quadrantKey) {
+        const data = quadrantData[quadrantKey];
+        document.getElementById('modalTitle').innerText = data.title;
+        document.getElementById('modalBody').innerHTML = data.content;
+        document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal(event) {
+        if (event.target.id === 'modalOverlay') {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+    }
+
+    function closeModalDirect() {
+        document.getElementById('modalOverlay').classList.remove('active');
+    }
+</script>
+
+</body>
+</html>
