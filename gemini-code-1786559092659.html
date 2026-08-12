@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las 6 Estrategias - Administración del Tiempo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #104938;
+            --primary-medium: #156049;
+            --primary-base: #279371;
+            --primary-teal: #3F9089;
+            --accent-lime: #D1DE8C;
+            --accent-green: #93C01F;
+            --bg-light: #F4F9F4;
+            --text-dark: #222222;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid var(--primary-base);
+            position: relative;
+        }
+
+        .header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px 25px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-green);
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: var(--accent-lime);
+            margin-top: 5px;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #f9fbf9 0%, #eef5f1 100%);
+            min-height: 380px;
+        }
+
+        .card-container {
+            width: 320px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-front {
+            color: var(--white);
+        }
+
+        .card-front.bg-odd {
+            background: linear-gradient(135deg, var(--primary-base), var(--primary-teal));
+        }
+
+        .card-front.bg-even {
+            background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+        }
+
+        .card-num {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-lime);
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .card-hint {
+            position: absolute;
+            bottom: 12px;
+            font-size: 0.75rem;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-back {
+            background-color: var(--accent-lime);
+            color: var(--primary-dark);
+            transform: rotateY(180deg);
+            border: 2px solid var(--primary-base);
+            text-align: left;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .author-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary-medium);
+            background: rgba(16, 73, 56, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: #104938;
+            font-weight: 600;
+        }
+
+        .btn-nav {
+            background: var(--accent-green);
+            color: var(--white);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-base);
+            transform: scale(1.1);
+        }
+
+        .btn-nav:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 450px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0 10px;
+        }
+
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent-green);
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent-green);
+            width: 28px;
+            border-radius: 10px;
+        }
+
+        .slide-counter {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-lime);
+        }
+
+        @media (max-width: 500px) {
+            .card-container {
+                width: 270px;
+                height: 290px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>LAS 6 ESTRATEGIAS DE ADMINISTRACIÓN DEL TIEMPO</h1>
+            <p>Visión general y fundamentos teóricos</p>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-controls">
+                <button class="btn-nav" id="prevBtn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                <button class="btn-nav" id="nextBtn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <!-- Card 1 -->
+            <div class="card-container" id="slide-0" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front bg-odd">
+                        <span class="card-num">01 / 06</span>
+                        <i class="fas fa-bullseye card-icon"></i>
+                        <h2 class="card-title">Establecimiento de Metas y Objetivos</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Tracy | Lakein | Covey</div>
+                        <p class="card-desc">Estrategia fundacional que transforma deseos en compromisos escritos en tres horizontes (vida, mediano y corto plazo) alineados con valores personales.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-container" id="slide-1" onclick="flipCard(this)" style="display: none;">
+                <div class="card-inner">
+                    <div class="card-front bg-even">
+                        <span class="card-num">02 / 06</span>
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <h2 class="card-title">Planificación Sistemática</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Drucker | Tracy | Covey</div>
+                        <p class="card-desc">Traducción operativa en listas diarias (regla 10:1) y semanales por roles, consolidando bloques continuos de tiempo para trabajo profundo.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-container" id="slide-2" onclick="flipCard(this)" style="display: none;">
+                <div class="card-inner">
+                    <div class="card-front bg-odd">
+                        <span class="card-num">03 / 06</span>
+                        <i class="fas fa-layer-group card-icon"></i>
+                        <h2 class="card-title">Priorización de Tareas</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Lakein | Covey | Tracy</div>
+                        <p class="card-desc">Criterios para decidir qué hacer primero mediante el método ABC, la Matriz de Covey (Cuadrante II) y la regla de 'Comer el Sapo' al iniciar el día.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card-container" id="slide-3" onclick="flipCard(this)" style="display: none;">
+                <div class="card-inner">
+                    <div class="card-front bg-even">
+                        <span class="card-num">04 / 06</span>
+                        <i class="fas fa-cubes card-icon"></i>
+                        <h2 class="card-title">Agrupación de Tareas Similares</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Drucker | Tracy</div>
+                        <p class="card-desc">Agrupar actividades homogéneas (emails, llamadas) en bloques únicos (batching) para reducir el costo cognitivo por cambio de contexto.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card-container" id="slide-4" onclick="flipCard(this)" style="display: none;">
+                <div class="card-inner">
+                    <div class="card-front bg-odd">
+                        <span class="card-num">05 / 06</span>
+                        <i class="fas fa-shield-alt card-icon"></i>
+                        <h2 class="card-title">Gestión de Distractores</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Tracy | Aeon & Aguinis</div>
+                        <p class="card-desc">Identificación y control de ladrones de tiempo externos (notificaciones) e internos (procrastinación) mediante modificación del entorno y autorregulación.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="card-container" id="slide-5" onclick="flipCard(this)" style="display: none;">
+                <div class="card-inner">
+                    <div class="card-front bg-even">
+                        <span class="card-num">06 / 06</span>
+                        <i class="fas fa-sync card-icon"></i>
+                        <h2 class="card-title">Revisión y Ajuste Continuo</h2>
+                        <div class="card-hint"><i class="fas fa-sync-alt"></i> Haz clic para girar</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="author-tag"><i class="fas fa-book-reader"></i> Covey | Claessens et al.</div>
+                        <p class="card-desc">Evaluación periódica semanal para reflexionar sobre logros, ajustar prioridades y mantener la flexibilidad sin caer en rutinas rígidas.</p>
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--primary-dark); align-self: flex-end;"><i class="fas fa-redo"></i> Volver</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <div class="dots" id="dotsContainer">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
+                <span class="dot" onclick="goToSlide(4)"></span>
+                <span class="dot" onclick="goToSlide(5)"></span>
+            </div>
+            <div class="slide-counter" id="slideCounter">Estrategia 1 de 6</div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 6;
+
+        function showSlide(index) {
+            for (let i = 0; i < totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (i === index) {
+                    slide.style.display = 'block';
+                } else {
+                    slide.style.display = 'none';
+                    slide.classList.remove('flipped');
+                }
+            }
+
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            document.getElementById('slideCounter').innerText = `Estrategia ${index + 1} de ${totalSlides}`;
+            
+            document.getElementById('prevBtn').disabled = (index === 0);
+            document.getElementById('nextBtn').disabled = (index === totalSlides - 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(currentSlide);
+        }
+
+        function flipCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        // Inicialización
+        showSlide(0);
+    </script>
+</body>
+</html>
