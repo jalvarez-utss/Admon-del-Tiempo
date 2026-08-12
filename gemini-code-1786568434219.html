@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quinta Estrategia: Semáforo de Distractores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #104938;
+            --primary-medium: #156049;
+            --primary-base: #279371;
+            --primary-teal: #3F9089;
+            --accent-lime: #D1DE8C;
+            --red-color: #B22222;
+            --yellow-color: #DAA520;
+            --green-color: #93C01F;
+            --bg-light: #F4F9F4;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #222;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        .main-card {
+            width: 100%;
+            max-width: 950px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-base);
+            padding: 25px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Encabezado */
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: var(--primary-teal);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Layout Horizontal Principal */
+        .interactive-stage {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 35px;
+            padding: 10px 0;
+        }
+
+        /* Estructura del Semáforo Horizontal */
+        .traffic-housing {
+            background: #1e2422;
+            padding: 18px 30px;
+            border-radius: 60px;
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), inset 0 0 10px rgba(0,0,0,0.5);
+            border: 3px solid #333;
+            position: relative;
+        }
+
+        .light-btn {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            position: relative;
+            opacity: 0.35;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .light-btn:hover {
+            transform: scale(1.1);
+            opacity: 0.85;
+        }
+
+        .light-red {
+            background-color: var(--red-color);
+        }
+        .light-red.active {
+            opacity: 1;
+            box-shadow: 0 0 35px var(--red-color), inset 0 0 15px rgba(255,255,255,0.6);
+            border-color: #ffffff;
+        }
+
+        .light-yellow {
+            background-color: var(--yellow-color);
+        }
+        .light-yellow.active {
+            opacity: 1;
+            box-shadow: 0 0 35px var(--yellow-color), inset 0 0 15px rgba(255,255,255,0.6);
+            border-color: #ffffff;
+        }
+
+        .light-green {
+            background-color: var(--green-color);
+        }
+        .light-green.active {
+            opacity: 1;
+            box-shadow: 0 0 35px var(--green-color), inset 0 0 15px rgba(255,255,255,0.6);
+            border-color: #ffffff;
+        }
+
+        /* Tarjetas conectoras laterales */
+        .cards-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .level-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            border-left: 6px solid #ccc;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+        }
+
+        .level-card:hover {
+            transform: translateX(8px);
+            background: #eef6f1;
+        }
+
+        .level-card.card-red { border-left-color: var(--red-color); }
+        .level-card.card-yellow { border-left-color: var(--yellow-color); }
+        .level-card.card-green { border-left-color: var(--green-color); }
+
+        .card-icon-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .card-red .card-icon-badge { background: var(--red-color); }
+        .card-yellow .card-icon-badge { background: var(--yellow-color); }
+        .card-green .card-icon-badge { background: var(--green-color); }
+
+        .card-info h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.92rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .card-info p {
+            font-size: 0.78rem;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        /* Indicador emergente */
+        .instruction-bar {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--primary-medium);
+            font-weight: 600;
+            background: rgba(209, 222, 140, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Modal Interactivo */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(16, 73, 56, 0.65);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--accent-lime);
+            color: var(--primary-dark);
+            width: 100%;
+            max-width: 580px;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 3px solid var(--primary-base);
+            position: relative;
+            transform: scale(0.85);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-base);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-body p {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            font-size: 0.88rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-body li {
+            margin-bottom: 6px;
+        }
+
+        .author-footnote {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: right;
+            color: var(--primary-medium);
+            border-top: 1px solid rgba(16, 73, 56, 0.2);
+            padding-top: 8px;
+        }
+
+        /* Responsive para pantallas muy pequeñas */
+        @media (max-width: 768px) {
+            .interactive-stage {
+                flex-direction: column;
+            }
+            .traffic-housing {
+                padding: 15px 20px;
+                gap: 15px;
+            }
+            .light-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 1.3rem;
+            }
+            .cards-column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <header class="header">
+            <h1>Quinta Estrategia: Identificación y Gestión de Distractores</h1>
+            <p>Haz clic en las luces del semáforo para explorar el nivel de impacto y sus soluciones</p>
+        </header>
+
+        <!-- Etapa Interactiva Horizontal -->
+        <div class="interactive-stage">
+            <!-- Semáforo Principal Horizontal -->
+            <div class="traffic-housing">
+                <button class="light-btn light-red" id="btn-red" onclick="openModal('red')" title="Nivel Rojo">
+                    <i class="fas fa-bell-slash"></i>
+                </button>
+                <button class="light-btn light-yellow" id="btn-yellow" onclick="openModal('yellow')" title="Nivel Amarillo">
+                    <i class="fas fa-brain"></i>
+                </button>
+                <button class="light-btn light-green" id="btn-green" onclick="openModal('green')" title="Nivel Verde">
+                    <i class="fas fa-shield-alt"></i>
+                </button>
+            </div>
+
+            <!-- Columna de accesos con tarjetas -->
+            <div class="cards-column">
+                <div class="level-card card-red" onclick="openModal('red')">
+                    <div class="card-icon-badge"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="card-info">
+                        <h3>Nivel Rojo (Alto Impacto)</h3>
+                        <p>Distractores externos e interrupciones digitales</p>
+                    </div>
+                </div>
+
+                <div class="level-card card-yellow" onclick="openModal('yellow')">
+                    <div class="card-icon-badge"><i class="fas fa-user-clock"></i></div>
+                    <div class="card-info">
+                        <h3>Nivel Amarillo (Impacto Medio)</h3>
+                        <p>Distractores internos y procrastinación</p>
+                    </div>
+                </div>
+
+                <div class="level-card card-green" onclick="openModal('green')">
+                    <div class="card-icon-badge"><i class="fas fa-check-circle"></i></div>
+                    <div class="card-info">
+                        <h3>Nivel Verde (Bajo Impacto)</h3>
+                        <p>Entorno controlado y trabajo enfocado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction-bar">
+            <i class="fas fa-hand-pointer"></i> Selecciona cualquier color del semáforo para abrir las estrategias de gestión concretas.
+        </div>
+    </div>
+
+    <!-- Modal Emergente -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOuter(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Título</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido -->
+            </div>
+            <div class="author-footnote" id="modalAuthor">
+                Fundamento: Tracy (2014); Aeon & Aguinis (2017)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modalData = {
+            red: {
+                title: "Alto Impacto: Distractores Externos",
+                body: `
+                    <p><strong>Ejemplos principales:</strong> Notificaciones digitales inmediatas, llamadas no planificadas, reuniones improductivas y ambientes de trabajo sin barreras.</p>
+                    <p><strong>Estrategias concretas de gestión:</strong></p>
+                    <ul>
+                        <li>Configurar el entorno digital silenciando o desactivando avisos emergentes durante bloques fijos.</li>
+                        <li>Establecer acuerdos de comunicación con el equipo notificando horarios de máxima concentración.</li>
+                        <li>Designar períodos específicos del día para responder correos y mensajes en lugar de hacerlo reactivamente.</li>
+                    </ul>
+                `
+            },
+            yellow: {
+                title: "Impacto Medio: Distractores Internos",
+                body: `
+                    <p><strong>Ejemplos principales:</strong> Pensamientos rumiantes, preocupaciones pendientes, impulsos hacia entretenimiento inmediato y procrastinación.</p>
+                    <p><strong>Estrategias concretas de gestión:</strong></p>
+                    <ul>
+                        <li>Implementar el "vaciado mental": registrar ideas secundarias o tareas en una lista de captura rápida para liberar la capacidad cognitiva.</li>
+                        <li>Ejercer autorregulación emocional identificando la incomodidad inicial antes de posponer una actividad compleja.</li>
+                        <li>Crear rutinas breves de inicio de jornada que faciliten la entrada paulatina en estado de enfoque.</li>
+                    </ul>
+                `
+            },
+            green: {
+                title: "Bajo Impacto: Distractores Gestionados",
+                body: `
+                    <p><strong>Ejemplos principales:</strong> Espacios de trabajo optimizados, bloques de atención protegidos y hábitos de enfoque consolidados.</p>
+                    <p><strong>Estrategias concretas de gestión:</strong></p>
+                    <ul>
+                        <li>Consolidar bloques continuos de trabajo profundo (Deep Work) libres de estímulos multitarea.</li>
+                        <li>Acondicionar físicamente el espacio eliminando elementos innecesarios antes de comenzar.</li>
+                        <li>Realizar revisiones periódicas para ajustar el plan y mantener la disciplina de concentración.</li>
+                    </ul>
+                `
+            }
+        };
+
+        function openModal(level) {
+            const data = modalData[level];
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalBody').innerHTML = data.body;
+            document.getElementById('modalOverlay').classList.add('active');
+
+            // Encendido directo en semáforo
+            document.querySelectorAll('.light-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${level}`).classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function closeModalOnOuter(e) {
+            if (e.target.id === 'modalOverlay') {
+                closeModal();
+            }
+        }
+
+        // Secuencia animada de prueba al cargar el componente
+        window.addEventListener('DOMContentLoaded', () => {
+            const red = document.getElementById('btn-red');
+            const yellow = document.getElementById('btn-yellow');
+            const green = document.getElementById('btn-green');
+
+            setTimeout(() => {
+                red.classList.add('active');
+                setTimeout(() => {
+                    red.classList.remove('active');
+                    yellow.classList.add('active');
+                    setTimeout(() => {
+                        yellow.classList.remove('active');
+                        green.classList.add('active');
+                        setTimeout(() => {
+                            green.classList.remove('active');
+                        }, 700);
+                    }, 700);
+                }, 700);
+            }, 400);
+        });
+    </script>
+</body>
+</html>
