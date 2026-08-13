@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Definición de la administración del tiempo: perspectivas y enfoques</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      color: #1f4e43;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #555555;
+      line-height: 1.3;
+      max-height: 42px;
+      overflow: hidden;
+    }
+
+    /* Carousel Track */
+    .carousel-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-container {
+      width: 480px;
+      height: 270px;
+      perspective: 1000px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 400%;
+      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide {
+      width: 25%;
+      height: 100%;
+      padding: 0 10px;
+    }
+
+    /* Flip Card Style */
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Front Styles */
+    .bg-1 { background-color: #279371; }
+    .bg-2 { background-color: #3F9089; }
+
+    .flip-card-front {
+      color: white;
+    }
+
+    .flip-card-front i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .flip-card-front h2 {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .flip-card-front .author {
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.9;
+      margin-top: 6px;
+    }
+
+    .tap-hint {
+      position: absolute;
+      bottom: 12px;
+      font-size: 10px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Back Style */
+    .flip-card-back {
+      background-color: #D1DE8C;
+      color: #111111;
+      transform: rotateY(180deg);
+      text-align: justify;
+      justify-content: space-between;
+    }
+
+    .flip-card-back h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f4e43;
+      border-bottom: 2px solid #93C01F;
+      padding-bottom: 4px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .flip-card-back p {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #222222;
+      margin: auto 0;
+    }
+
+    .flip-card-back .author-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #279371;
+      text-align: right;
+      width: 100%;
+    }
+
+    /* Controls */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #93C01F;
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .nav-btn:hover {
+      background-color: #7fa61a;
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .nav-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-btn.prev { left: 0px; }
+    .nav-btn.next { right: 0px; }
+
+    /* Indicators */
+    .indicators {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #cccccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #93C01F;
+      transform: scale(1.25);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Definición de la Administración del Tiempo</h1>
+      <p>La administración del tiempo es un conjunto articulado de habilidades, comportamientos y estrategias orientadas a optimizar el uso del tiempo y lograr metas con eficacia (Claessens et al., 2007).</p>
+    </div>
+
+    <div class="carousel-wrapper">
+      <button class="nav-btn prev" id="prevBtn" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+
+      <div class="carousel-container">
+        <div class="carousel-track" id="track">
+          
+          <!-- Tarjeta 1 -->
+          <div class="slide">
+            <div class="flip-card" onclick="toggleFlip(this)">
+              <div class="flip-card-inner">
+                <div class="flip-card-front bg-1">
+                  <i class="fa-solid fa-user-gear"></i>
+                  <h2>Perspectiva Conductual</h2>
+                  <span class="author">(Macan, 1994)</span>
+                  <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Clic para girar</div>
+                </div>
+                <div class="flip-card-back">
+                  <h3>Perspectiva Conductual</h3>
+                  <p>Conjunto de comportamientos mediante los cuales las personas gestionan de manera efectiva el tiempo que dedican a sus actividades, con el propósito de incrementar su productividad y reducir el estrés.</p>
+                  <div class="author-tag">Macan (1994)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2 -->
+          <div class="slide">
+            <div class="flip-card" onclick="toggleFlip(this)">
+              <div class="flip-card-inner">
+                <div class="flip-card-front bg-2">
+                  <i class="fa-solid fa-brain"></i>
+                  <h2>Perspectiva Cognitiva y Estratégica</h2>
+                  <span class="author">(Lakein, 1973)</span>
+                  <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Clic para girar</div>
+                </div>
+                <div class="flip-card-back">
+                  <h3>Perspectiva Cognitiva</h3>
+                  <p>Proceso estratégico de determinar necesidades individuales y organizacionales, establecer metas claras y priorizar de manera rigurosa las tareas requeridas para alcanzarlas con éxito.</p>
+                  <div class="author-tag">Lakein (1973)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 3 -->
+          <div class="slide">
+            <div class="flip-card" onclick="toggleFlip(this)">
+              <div class="flip-card-inner">
+                <div class="flip-card-front bg-1">
+                  <i class="fa-solid fa-sitemap"></i>
+                  <h2>Enfoque Organizacional</h2>
+                  <span class="author">(Drucker, 1967)</span>
+                  <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Clic para girar</div>
+                </div>
+                <div class="flip-card-back">
+                  <h3>Enfoque Organizacional</h3>
+                  <p>Habilidad ejecutiva de registrar, gestionar y consolidar el tiempo de trabajo con la finalidad de ejecutar de manera prioritaria aquellas tareas que generan mayor valor para la organización.</p>
+                  <div class="author-tag">Drucker (1967)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 4 -->
+          <div class="slide">
+            <div class="flip-card" onclick="toggleFlip(this)">
+              <div class="flip-card-inner">
+                <div class="flip-card-front bg-2">
+                  <i class="fa-solid fa-chart-line"></i>
+                  <h2>Perspectiva Integradora</h2>
+                  <span class="author">(Aeon y Aguinis, 2017)</span>
+                  <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Clic para girar</div>
+                </div>
+                <div class="flip-card-back">
+                  <h3>Perspectiva Integradora</h3>
+                  <p>Proceso de regulación metacognitiva y conductual que permite a los individuos alcanzar sus metas con mayor eficiencia, eficacia y con un menor costo emocional asociado.</p>
+                  <div class="author-tag">Aeon y Aguinis (2017)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="nav-btn next" id="nextBtn" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators">
+      <span class="dot active" onclick="goToSlide(0)"></span>
+      <span class="dot" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+      <span class="dot" onclick="goToSlide(3)"></span>
+    </div>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const totalSlides = 4;
+    const track = document.getElementById('track');
+    const dots = document.querySelectorAll('.dot');
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${currentIndex * 25}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    function moveSlide(direction) {
+      currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    function toggleFlip(card) {
+      card.classList.toggle('flipped');
+    }
+  </script>
+</body>
+</html>
