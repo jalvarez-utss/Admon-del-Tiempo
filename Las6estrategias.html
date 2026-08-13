@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las 6 estrategias de administración del tiempo</title>
+<style>
+:root{
+  --green1:#279371;
+  --green2:#156049;
+  --lime:#D1DE8C;
+  --arrow:#93C01F;
+  --dark:#104938;
+  --bg:#F4F9F4;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;font-family:Arial,Helvetica,sans-serif}
+body{
+  background:var(--bg);
+  color:#222;
+  padding:28px 18px 38px;
+  overflow-x:hidden;
+}
+.page{max-width:1180px;margin:auto}
+.header{text-align:center;margin-bottom:24px}
+.header h1{
+  color:var(--dark);
+  font-size:clamp(1.45rem,3vw,2.2rem);
+  font-weight:800;
+  margin-bottom:7px;
+}
+.header p{color:var(--green2);font-size:clamp(.85rem,1.7vw,1rem)}
+.carousel-wrap{position:relative}
+.carousel{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:16px;
+}
+.card{
+  height:350px;
+  perspective:1000px;
+  cursor:pointer;
+  outline:none;
+}
+.card-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.2,.75,.25,1);
+}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:18px;
+  padding:22px 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(16,73,56,.16);
+  border:2px solid var(--dark);
+}
+.front{color:var(--white)}
+.card:nth-child(odd) .front{background:var(--green1)}
+.card:nth-child(even) .front{background:var(--green2)}
+.back{
+  background:var(--lime);
+  color:var(--dark);
+  transform:rotateY(180deg);
+  border-color:var(--green1);
+  justify-content:flex-start;
+  text-align:left;
+}
+.number{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--arrow);color:white;
+  font-size:1.3rem;font-weight:800;margin-bottom:18px;
+}
+.icon{font-size:2.5rem;margin-bottom:18px}
+.front h2{font-size:1.05rem;line-height:1.3}
+.front .hint{margin-top:18px;font-size:.76rem;font-weight:700;color:var(--lime)}
+.back h3{font-size:1rem;line-height:1.3;margin-bottom:12px}
+.back .authors{
+  font-weight:800;color:var(--green2);font-size:.82rem;margin-bottom:12px
+}
+.back p{font-size:.78rem;line-height:1.5}
+.back .hint-back{
+  margin-top:auto;align-self:center;font-size:.72rem;font-weight:800;color:var(--green2)
+}
+.controls{
+  display:flex;justify-content:center;align-items:center;gap:16px;margin-top:20px
+}
+.arrow{
+  width:42px;height:42px;border:0;border-radius:50%;
+  background:var(--arrow);color:#fff;font-size:1.25rem;font-weight:800;
+  cursor:pointer;box-shadow:0 5px 12px rgba(16,73,56,.18)
+}
+.arrow:active{transform:scale(.94)}
+.dots{display:flex;gap:7px}
+.dot{
+  width:9px;height:9px;border-radius:50%;background:#b9c9c0;cursor:pointer
+}
+.dot.active{background:var(--green2)}
+.note{
+  text-align:center;margin-top:16px;color:#527267;font-size:.75rem
+}
+@media(max-width:1050px){
+  .carousel{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  body{padding:20px 12px 28px}
+  .carousel{grid-template-columns:1fr}
+  .card{height:310px}
+  .controls{margin-top:16px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <h1>Las 6 estrategias de administración del tiempo</h1>
+    <p>Haz clic en cada tarjeta para conocer su fundamento y aplicación.</p>
+  </header>
+
+  <main class="carousel-wrap">
+    <section class="carousel" id="carousel" aria-label="Carrusel de seis estrategias"></section>
+    <div class="controls">
+      <button class="arrow" id="prev" type="button" aria-label="Anterior">‹</button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="next" type="button" aria-label="Siguiente">›</button>
+    </div>
+    <div class="note">Puedes hacer clic en una tarjeta para girarla.</div>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const strategies = [
+    {
+      title:"Establecimiento de metas y objetivos",
+      authors:"Tracy, Lakein y Covey",
+      icon:"🎯",
+      text:"Definir metas escritas, específicas y con plazos claros permite convertir deseos en compromisos concretos y alinear las decisiones cotidianas con los propósitos personales."
+    },
+    {
+      title:"Planificación sistemática",
+      authors:"Drucker, Tracy y Covey",
+      icon:"📅",
+      text:"Traducir las metas en acciones distribuidas en el tiempo. La planificación diaria y semanal permite ordenar prioridades, reservar bloques de trabajo y anticipar conflictos."
+    },
+    {
+      title:"Priorización de tareas",
+      authors:"Lakein, Covey y Tracy",
+      icon:"⭐",
+      text:"Elegir qué hacer primero mediante criterios de valor, urgencia e importancia. Incluye el método ABC, la matriz de Covey y la práctica de comenzar con la tarea más importante."
+    },
+    {
+      title:"Agrupación de tareas similares",
+      authors:"Drucker",
+      icon:"🗂️",
+      text:"Reunir actividades de naturaleza similar en bloques de tiempo reduce el costo del cambio de contexto y ayuda a conservar la concentración en tareas de mayor valor."
+    },
+    {
+      title:"Identificación y gestión de distractores",
+      authors:"Tracy, Aeon y Aguinis",
+      icon:"🔕",
+      text:"Detectar distractores externos e internos y establecer medidas de control, como períodos sin notificaciones, horarios para comunicaciones y hábitos de autorregulación."
+    },
+    {
+      title:"Revisión y ajuste continuo",
+      authors:"Covey y Claessens et al.",
+      icon:"🔄",
+      text:"Revisar periódicamente lo realizado, identificar obstáculos, ajustar prioridades y reconocer avances convierte la administración del tiempo en un proceso de mejora continua."
+    }
+  ];
+
+  const carousel=document.getElementById("carousel");
+  const dots=document.getElementById("dots");
+  let start=0;
+  let visible=6;
+
+  function updateVisible(){
+    if(window.innerWidth<=680) visible=1;
+    else if(window.innerWidth<=1050) visible=3;
+    else visible=6;
+  }
+
+  function render(){
+    updateVisible();
+    carousel.innerHTML="";
+    dots.innerHTML="";
+    const end=Math.min(start+visible,strategies.length);
+
+    for(let i=start;i<end;i++){
+      const s=strategies[i];
+      const card=document.createElement("article");
+      card.className="card";
+      card.tabIndex=0;
+      card.setAttribute("role","button");
+      card.setAttribute("aria-label","Ver información sobre "+s.title);
+      card.innerHTML=
+        '<div class="card-inner">'+
+          '<div class="face front">'+
+            '<div class="number">'+(i+1)+'</div>'+
+            '<div class="icon">'+s.icon+'</div>'+
+            '<h2>'+s.title+'</h2>'+
+            '<div class="hint">Clic para girar</div>'+
+          '</div>'+
+          '<div class="face back">'+
+            '<h3>'+s.title+'</h3>'+
+            '<div class="authors">'+s.authors+'</div>'+
+            '<p>'+s.text+'</p>'+
+            '<div class="hint-back">Clic para volver</div>'+
+          '</div>'+
+        '</div>';
+
+      function flip(){card.classList.toggle("flipped")}
+      card.addEventListener("click",flip);
+      card.addEventListener("keydown",function(e){
+        if(e.key==="Enter" || e.key===" "){
+          e.preventDefault(); flip();
+        }
+      });
+      carousel.appendChild(card);
+    }
+
+    const pages=Math.ceil(strategies.length/visible);
+    for(let p=0;p<pages;p++){
+      const dot=document.createElement("button");
+      dot.type="button";
+      dot.className="dot"+(p===Math.floor(start/visible)?" active":"");
+      dot.setAttribute("aria-label","Ir al grupo "+(p+1));
+      dot.addEventListener("click",function(){
+        start=p*visible;
+        if(start>=strategies.length) start=Math.max(0,strategies.length-visible);
+        render();
+      });
+      dots.appendChild(dot);
+    }
+  }
+
+  document.getElementById("prev").addEventListener("click",function(){
+    updateVisible();
+    start-=visible;
+    if(start<0) start=Math.max(0,strategies.length-visible);
+    render();
+  });
+
+  document.getElementById("next").addEventListener("click",function(){
+    updateVisible();
+    start+=visible;
+    if(start>=strategies.length) start=0;
+    render();
+  });
+
+  window.addEventListener("resize",function(){
+    const oldVisible=visible;
+    updateVisible();
+    if(oldVisible!==visible){
+      start=0;
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
