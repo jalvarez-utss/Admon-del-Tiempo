@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Características fundamentales de la administración del tiempo</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      color: #156049;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #555555;
+      line-height: 1.3;
+      max-height: 42px;
+      overflow: hidden;
+    }
+
+    /* Carousel Track */
+    .carousel-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-container {
+      width: 480px;
+      height: 270px;
+      perspective: 1000px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 500%;
+      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Fade-in Animation on Load */
+    .slide {
+      width: 20%;
+      height: 100%;
+      padding: 0 10px;
+      animation: fadeIn 0.9s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Card Style */
+    .card {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #ffffff;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Alternating background colors */
+    .bg-1 { background-color: #279371; }
+    .bg-2 { background-color: #156049; }
+
+    .card i {
+      font-size: 52px;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    .click-hint {
+      position: absolute;
+      bottom: 12px;
+      font-size: 10px;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    /* Tooltip / Overlay Modal on Click */
+    .tooltip-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(21, 96, 73, 0.95);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: justify;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 5;
+    }
+
+    .card.active-tooltip .tooltip-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tooltip-overlay h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #D1DE8C;
+      margin-bottom: 10px;
+      text-align: center;
+      border-bottom: 2px solid #D1DE8C;
+      padding-bottom: 4px;
+      width: 100%;
+    }
+
+    .tooltip-overlay p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #ffffff;
+    }
+
+    .close-hint {
+      margin-top: 12px;
+      font-size: 10px;
+      color: #D1DE8C;
+      font-weight: 600;
+      align-self: center;
+    }
+
+    /* Navigation Controls */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #D1DE8C;
+      color: #156049;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .nav-btn:hover {
+      background-color: #b8c772;
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .nav-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-btn.prev { left: 0px; }
+    .nav-btn.next { right: 0px; }
+
+    /* Indicators */
+    .indicators {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #cccccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #156049;
+      transform: scale(1.25);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Características fundamentales de la administración del tiempo</h1>
+      <p>Independientemente de la perspectiva desde la que se aborde, la administración del tiempo presenta un conjunto de características clave como disciplina (Claessens et al., 2007; Tracy, 2014).</p>
+    </div>
+
+    <div class="carousel-wrapper">
+      <button class="nav-btn prev" id="prevBtn" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+
+      <div class="carousel-container">
+        <div class="carousel-track" id="track">
+          
+          <!-- Tarjeta 1 -->
+          <div class="slide">
+            <div class="card bg-1" onclick="toggleTooltip(this)">
+              <i class="fa-solid fa-hand-pointer"></i>
+              <h2>Voluntariedad</h2>
+              <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver más</div>
+              <div class="tooltip-overlay">
+                <h3>Voluntariedad</h3>
+                <p>La administración del tiempo requiere de una decisión consciente y deliberada. No ocurre de forma espontánea; implica que la persona asuma el control activo de cómo invierte sus horas y minutos.</p>
+                <span class="close-hint">(Clic para cerrar)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2 -->
+          <div class="slide">
+            <div class="card bg-2" onclick="toggleTooltip(this)">
+              <i class="fa-solid fa-bullseye"></i>
+              <h2>Orientación a metas</h2>
+              <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver más</div>
+              <div class="tooltip-overlay">
+                <h3>Orientación a metas</h3>
+                <p>Toda gestión del tiempo eficaz parte de la claridad sobre lo que se desea alcanzar. Sin metas definidas, la priorización carece de criterios y el esfuerzo se dispersa.</p>
+                <span class="close-hint">(Clic para cerrar)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 3 -->
+          <div class="slide">
+            <div class="card bg-1" onclick="toggleTooltip(this)">
+              <i class="fa-solid fa-calendar-check"></i>
+              <h2>Planificación sistemática</h2>
+              <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver más</div>
+              <div class="tooltip-overlay">
+                <h3>Planificación sistemática</h3>
+                <p>La administración del tiempo supone la capacidad de anticipar tareas, asignar recursos temporales y ordenar actividades de manera lógica y progresiva.</p>
+                <span class="close-hint">(Clic para cerrar)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 4 -->
+          <div class="slide">
+            <div class="card bg-2" onclick="toggleTooltip(this)">
+              <i class="fa-solid fa-sliders"></i>
+              <h2>Flexibilidad adaptativa</h2>
+              <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver más</div>
+              <div class="tooltip-overlay">
+                <h3>Flexibilidad adaptativa</h3>
+                <p>Un buen gestor del tiempo no es rígido: reconoce que los planes deben ajustarse ante imprevistos y que la capacidad de reorganizar prioridades es tan importante como la de planificar.</p>
+                <span class="close-hint">(Clic para cerrar)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 5 -->
+          <div class="slide">
+            <div class="card bg-1" onclick="toggleTooltip(this)">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <h2>Aprendizaje continuo</h2>
+              <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver más</div>
+              <div class="tooltip-overlay">
+                <h3>Aprendizaje continuo</h3>
+                <p>La administración del tiempo es una habilidad que se desarrolla y perfecciona a lo largo del tiempo, a través de la práctica, la reflexión sobre los resultados y la incorporación de nuevas estrategias (Covey, 2015).</p>
+                <span class="close-hint">(Clic para cerrar)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="nav-btn next" id="nextBtn" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators">
+      <span class="dot active" onclick="goToSlide(0)"></span>
+      <span class="dot" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+      <span class="dot" onclick="goToSlide(3)"></span>
+      <span class="dot" onclick="goToSlide(4)"></span>
+    </div>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const totalSlides = 5;
+    const track = document.getElementById('track');
+    const dots = document.querySelectorAll('.dot');
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${currentIndex * 20}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    function moveSlide(direction) {
+      // Remove any active tooltips when navigating
+      document.querySelectorAll('.card').forEach(card => card.classList.remove('active-tooltip'));
+      currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      document.querySelectorAll('.card').forEach(card => card.classList.remove('active-tooltip'));
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    function toggleTooltip(card) {
+      card.classList.toggle('active-tooltip');
+    }
+  </script>
+</body>
+</html>
