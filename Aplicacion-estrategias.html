@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación Contextualizada de las Estrategias</title>
+    <style>
+        :root {
+            --color-front-bg: #279371;
+            --color-back-bg: #D1DE8C;
+            --color-dark-text: #104938;
+            --color-bg: #F4F9F4;
+            --color-white: #ffffff;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg);
+            color: #2c3e50;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            height: 580px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            padding: 20px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--color-front-bg);
+            padding-bottom: 8px;
+        }
+
+        h1 {
+            color: var(--color-dark-text);
+            font-size: 1.35rem;
+            margin-bottom: 4px;
+        }
+
+        .intro-text {
+            font-size: 0.8rem;
+            color: #444;
+            line-height: 1.35;
+            text-align: justify;
+            background: #f8faf8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-dark-text);
+        }
+
+        /* Main Flip Section */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        /* Flip Card Container with Zoom-in Animation */
+        .flip-card {
+            background-color: transparent;
+            width: 580px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            animation: zoomIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-radius: 16px;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 25px;
+        }
+
+        /* Card Front */
+        .flip-card-front {
+            background-color: var(--color-front-bg);
+            color: var(--color-white);
+        }
+
+        .flip-card-front .icon {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .flip-card-front h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .flip-card-front .hint {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        /* Card Back */
+        .flip-card-back {
+            background-color: var(--color-back-bg);
+            color: var(--color-dark-text);
+            transform: rotateY(180deg);
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        .flip-card-back h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--color-dark-text);
+            width: 100%;
+            padding-bottom: 3px;
+        }
+
+        .flip-card-back ul {
+            font-size: 0.82rem;
+            line-height: 1.45;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .flip-card-back li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .flip-card-back li strong {
+            color: #0b3327;
+        }
+
+        /* Context Icons Below */
+        .contexts-container {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .context-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 8px 18px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1.5 solid #e2ece9;
+            transition: transform 0.25s ease;
+        }
+
+        .context-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .context-icon {
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+        }
+
+        .context-label {
+            font-weight: bold;
+            color: var(--color-dark-text);
+            font-size: 0.82rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #777;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Sexta Estrategia: Aplicación Contextualizada de las Estrategias</h1>
+    </header>
+
+    <div class="intro-text">
+        <p>No existe una combinación única y universal que funcione para todas las personas. La efectividad depende de factores individuales, contextuales y temporales (Aeon & Aguinis, 2017). Asimismo, las estrategias deben fundamentarse en un sistema claro de valores personales para ser sostenibles (Covey, 2015).</p>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Interactive Single Flip Card -->
+        <div class="flip-card" id="flipCard" onclick="toggleFlip()">
+            <div class="flip-card-inner">
+                <!-- Front Side -->
+                <div class="flip-card-front">
+                    <div class="icon">🔧</div>
+                    <h2>"No existe una estrategia universalmente óptima"</h2>
+                    <div class="hint">Haz clic para girar y ver los 3 factores clave 🔄</div>
+                </div>
+
+                <!-- Back Side -->
+                <div class="flip-card-back">
+                    <h3>Factores de Selección (Tracy, 2014; Covey, 2015):</h3>
+                    <ul>
+                        <li>
+                            <span>📌</span>
+                            <span><strong>1. Tipo de actividad:</strong> Adaptar la herramienta al nivel de complejidad y urgencia requerida.</span>
+                        </li>
+                        <li>
+                            <span>🎯</span>
+                            <span><strong>2. Preferencias personales:</strong> Alinear el método con la personalidad y metas individuales.</span>
+                        </li>
+                        <li>
+                            <span>🧪</span>
+                            <span><strong>3. Experimentación deliberada:</strong> Probar durante 3 a 4 semanas hasta consolidar hábitos sostenibles.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Context Icons -->
+        <div class="contexts-container">
+            <div class="context-item">
+                <span class="context-icon">👤</span>
+                <span class="context-label">Contexto Personal</span>
+            </div>
+            <div class="context-item">
+                <span class="context-icon">🎓</span>
+                <span class="context-label">Contexto Académico</span>
+            </div>
+            <div class="context-item">
+                <span class="context-icon">💼</span>
+                <span class="context-label">Contexto Profesional</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>💡 Haz clic en la tarjeta superior para girarla e interactuar con los factores de selección.</p>
+    </footer>
+</div>
+
+<script>
+    function toggleFlip() {
+        const card = document.getElementById('flipCard');
+        card.classList.toggle('flipped');
+    }
+</script>
+
+</body>
+</html>
