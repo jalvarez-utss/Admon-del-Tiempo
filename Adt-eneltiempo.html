@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La administración del tiempo en el mundo contemporáneo</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Encabezado de sección */
+    .section-header {
+      background-color: #D1DE8C;
+      color: #104938;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .main-title {
+      text-align: center;
+      font-size: 13px;
+      color: #156049;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .subtitle-text {
+      font-size: 10.5px;
+      color: #444444;
+      text-align: center;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      padding: 0 10px;
+    }
+
+    /* Carrusel container */
+    .carousel-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      position: relative;
+      gap: 8px;
+    }
+
+    .carousel-viewport {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      padding: 4px 0;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      gap: 12px;
+    }
+
+    /* Tarjetas del carrusel */
+    .card {
+      min-width: calc(100% - 24px);
+      height: 190px;
+      border-radius: 14px;
+      padding: 16px 20px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      position: relative;
+      cursor: pointer;
+      margin: 0 12px;
+      animation: slideIn 0.8s ease-out forwards;
+    }
+
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .card-1 {
+      background-color: #279371;
+    }
+
+    .card-2 {
+      background-color: #3F9089;
+    }
+
+    .card-3 {
+      background-color: #156049;
+    }
+
+    .card-icon {
+      font-size: 38px;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .card-subtitle {
+      font-size: 11.5px;
+      text-align: center;
+      opacity: 0.95;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .click-hint {
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    /* Botones de navegación (Flechas) en #93C01F */
+    .nav-arrow {
+      background: #93C01F;
+      color: #104938;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .nav-arrow:hover {
+      transform: scale(1.12);
+      background-color: #a4d422;
+    }
+
+    .nav-arrow:active {
+      transform: scale(0.95);
+    }
+
+    /* Indicadores de punto */
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .dot.active {
+      background: #156049;
+      transform: scale(1.3);
+    }
+
+    /* Tooltip / Ventana emergente con cita */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 73, 56, 0.65);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: #D1DE8C;
+      color: #104938;
+      border-radius: 14px;
+      padding: 18px 20px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #104938;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+
+    .modal-header h3 {
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .close-btn {
+      background: #104938;
+      color: #D1DE8C;
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #156049;
+      transform: scale(1.1);
+    }
+
+    .modal-body p {
+      font-size: 11px;
+      line-height: 1.45;
+      text-align: justify;
+      font-weight: 500;
+    }
+
+    .quote-author {
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: right;
+      font-style: italic;
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 9.5px;
+      color: #156049;
+      margin-top: 4px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Encabezado de sección -->
+    <div class="section-header">
+      Un imperativo renovado
+    </div>
+
+    <div class="main-title">
+      La administración del tiempo en el mundo contemporáneo
+    </div>
+
+    <div class="subtitle-text">
+      El entorno contemporáneo presenta condiciones que hacen la gestión del tiempo más necesaria y difícil que nunca (Aeon & Aguinis, 2017).
+    </div>
+
+    <!-- Carrusel Wrapper -->
+    <div class="carousel-wrapper">
+      
+      <!-- Flecha Izquierda (#93C01F) -->
+      <button class="nav-arrow" id="prevBtn" onclick="moveSlide(-1)">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <!-- Viewport y Tarjetas -->
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="track">
+          
+          <!-- Tarjeta 1 -->
+          <div class="card card-1" onclick="openTooltip('tooltip1')">
+            <div class="card-icon">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div class="card-title">Hiperconectividad digital</div>
+            <div class="card-subtitle">Fragmentación de la concentración</div>
+            <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver evidencia (Aeon & Aguinis, 2017)</div>
+          </div>
+
+          <!-- Tarjeta 2 -->
+          <div class="card card-2" onclick="openTooltip('tooltip2')">
+            <div class="card-icon">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="card-title">Multiplicación de demandas</div>
+            <div class="card-subtitle">Laborales, académicas, familiares y sociales</div>
+            <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver evidencia (Aeon & Aguinis, 2017)</div>
+          </div>
+
+          <!-- Tarjeta 3 -->
+          <div class="card card-3" onclick="openTooltip('tooltip3')">
+            <div class="card-icon">
+              <i class="fa-solid fa-gears"></i>
+            </div>
+            <div class="card-title">Aceleración del cambio organizacional</div>
+            <div class="card-subtitle">Incertidumbre sobre las prioridades</div>
+            <div class="click-hint"><i class="fa-solid fa-circle-info"></i> Clic para ver evidencia (Aeon & Aguinis, 2017)</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Flecha Derecha (#93C01F) -->
+      <button class="nav-arrow" id="nextBtn" onclick="moveSlide(1)">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+    </div>
+
+    <!-- Indicadores de punto -->
+    <div class="dots-container">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+    </div>
+
+    <div class="footer-text">
+      La administración del tiempo ha dejado de ser una ventaja opcional para convertirse en una competencia de supervivencia.
+    </div>
+
+    <!-- Modales / Tooltips con citas textuales -->
+
+    <!-- Tooltip 1 -->
+    <div class="modal-overlay" id="tooltip1" onclick="closeTooltipOnOutsideClick(event, 'tooltip1')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-mobile-screen-button"></i> Hiperconectividad digital</h3>
+          <button class="close-btn" onclick="closeTooltip('tooltip1')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>La hiperconectividad digital ha generado un estado de disponibilidad permanente que fragmenta la concentración y multiplica las interrupciones. Los trabajadores del conocimiento reciben, en promedio, decenas de notificaciones diarias que desvían su atención de las tareas de alto valor.</p>
+          <div class="quote-author">— Sustento: Aeon y Aguinis (2017)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip 2 -->
+    <div class="modal-overlay" id="tooltip2" onclick="closeTooltipOnOutsideClick(event, 'tooltip2')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-calendar-days"></i> Multiplicación de demandas simultáneas</h3>
+          <button class="close-btn" onclick="closeTooltip('tooltip2')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>La multiplicación de demandas simultáneas (laborales, académicas, familiares y sociales) exige que las personas gestionen un volumen de responsabilidades para el que la intuición y la improvisación resultan insuficientes.</p>
+          <div class="quote-author">— Sustento: Aeon y Aguinis (2017)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip 3 -->
+    <div class="modal-overlay" id="tooltip3" onclick="closeTooltipOnOutsideClick(event, 'tooltip3')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-gears"></i> Aceleración del cambio organizacional</h3>
+          <button class="close-btn" onclick="closeTooltip('tooltip3')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>La aceleración del cambio en los entornos organizacionales genera incertidumbre sobre las prioridades y obliga a revisar constantemente la asignación del tiempo disponible.</p>
+          <div class="quote-author">— Sustento: Aeon y Aguinis (2017)</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const totalSlides = 3;
+    const track = document.getElementById('track');
+    const dots = document.querySelectorAll('.dot');
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        if (index === currentIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function moveSlide(direction) {
+      currentIndex += direction;
+      if (currentIndex < 0) {
+        currentIndex = totalSlides - 1;
+      } else if (currentIndex >= totalSlides) {
+        currentIndex = 0;
+      }
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    function openTooltip(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeTooltip(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeTooltipOnOutsideClick(event, id) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeTooltip(id);
+      }
+    }
+  </script>
+</body>
+</html>
