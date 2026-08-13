@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Componentes de la administración del tiempo</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      color: #156049;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #555555;
+      line-height: 1.3;
+      max-height: 38px;
+      overflow: hidden;
+    }
+
+    /* Puzzle Container */
+    .puzzle-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      padding: 10px 0;
+    }
+
+    /* Puzzle Piece Base Styling */
+    .puzzle-piece {
+      flex: 1;
+      height: 220px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      color: #ffffff;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      user-select: none;
+    }
+
+    .puzzle-piece:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    /* Background colors specified */
+    .piece-1 {
+      background-color: #279371;
+      animation: slideInLeft 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .piece-2 {
+      background-color: #3F9089;
+      animation: slideInTop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .piece-3 {
+      background-color: #156049;
+      animation: slideInRight 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Entry Animations */
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-150px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes slideInTop {
+      0% {
+        opacity: 0;
+        transform: translateY(-150px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes slideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(150px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    /* Piece Content */
+    .puzzle-piece i {
+      font-size: 38px;
+      margin-bottom: 12px;
+      color: #D1DE8C;
+    }
+
+    .puzzle-piece h2 {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .puzzle-piece .click-btn {
+      margin-top: 14px;
+      font-size: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Visual Connector Joints for Puzzle effect */
+    .puzzle-piece::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: inherit;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+
+    .piece-1::after { right: -10px; }
+    .piece-2::after { right: -10px; }
+    .piece-3::after { display: none; }
+
+    /* Modal Pop-up Window */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 73, 56, 0.6);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 24px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: #D1DE8C;
+      color: #104938;
+      border-radius: 16px;
+      padding: 24px 28px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #104938;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .close-btn {
+      background: #104938;
+      color: #D1DE8C;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #156049;
+      transform: scale(1.1);
+    }
+
+    .modal-body p {
+      font-size: 12.5px;
+      line-height: 1.55;
+      text-align: justify;
+      font-weight: 500;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 10px;
+      color: #156049;
+      margin-top: 4px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Componentes de la administración del tiempo</h1>
+      <p>Claessens et al. (2007) identificaron tres componentes principales que estructuran la administración del tiempo como práctica y determinan su efectividad.</p>
+    </div>
+
+    <!-- Puzzle Interactivo -->
+    <div class="puzzle-container">
+      
+      <!-- Pieza 1 -->
+      <div class="puzzle-piece piece-1" onclick="openModal('modal1')">
+        <i class="fa-solid fa-list-check"></i>
+        <h2>Comportamientos de gestión del tiempo</h2>
+        <div class="click-btn"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </div>
+
+      <!-- Pieza 2 -->
+      <div class="puzzle-piece piece-2" onclick="openModal('modal2')">
+        <i class="fa-solid fa-brain"></i>
+        <h2>Percepción de control sobre el tiempo</h2>
+        <div class="click-btn"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </div>
+
+      <!-- Pieza 3 -->
+      <div class="puzzle-piece piece-3" onclick="openModal('modal3')">
+        <i class="fa-solid fa-stopwatch"></i>
+        <h2>Preferencias y actitudes hacia el tiempo</h2>
+        <div class="click-btn"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </div>
+
+    </div>
+
+    <div class="footer-note">
+      La interacción de estos tres componentes determina la efectividad con que una persona administra su tiempo (Claessens et al., 2007).
+    </div>
+
+    <!-- Modales Emergentes (Fondo #D1DE8C, Texto #104938) -->
+    
+    <!-- Modal 1 -->
+    <div class="modal-overlay" id="modal1" onclick="closeModalOnOutsideClick(event, 'modal1')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Comportamientos de gestión del tiempo</h3>
+          <button class="close-btn" onclick="closeModal('modal1')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Son las acciones concretas que realiza una persona para controlar su uso del tiempo: elaborar listas de tareas, programar actividades, establecer plazos, eliminar interrupciones y delegar responsabilidades cuando es posible. Constituyen el componente más visible y directamente modificable mediante el entrenamiento.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal-overlay" id="modal2" onclick="closeModalOnOutsideClick(event, 'modal2')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Percepción de control sobre el tiempo</h3>
+          <button class="close-btn" onclick="closeModal('modal2')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Es el grado en que una persona siente que tiene dominio sobre cómo invierte su tiempo. Investigaciones empíricas han demostrado que una mayor percepción de control se asocia con menores niveles de estrés y mayor satisfacción con el desempeño personal y laboral (Macan, 1994).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div class="modal-overlay" id="modal3" onclick="closeModalOnOutsideClick(event, 'modal3')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Preferencias y actitudes hacia el tiempo</h3>
+          <button class="close-btn" onclick="closeModal('modal3')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Refieren a los valores y actitudes que una persona tiene respecto al tiempo: si lo considera un recurso valioso, si siente urgencia ante su escasez o si tiende a procrastinar. Estas preferencias condicionan la disposición a implementar estrategias de gestión y deben reconocerse para poder trabajar sobre ellas.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOutsideClick(event, id) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
