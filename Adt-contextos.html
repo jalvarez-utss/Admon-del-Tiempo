@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La administración del tiempo en los contextos personal, académico y profesional</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      color: #156049;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #555555;
+      line-height: 1.35;
+      max-height: 40px;
+      overflow: hidden;
+    }
+
+    /* Horizontal Buttons Container */
+    .buttons-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 10px 0;
+    }
+
+    .context-btn {
+      flex: 1;
+      height: 200px;
+      border: none;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 12px;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      animation: slideInLeft 0.7s ease-out forwards;
+    }
+
+    .context-btn:hover {
+      transform: translateY(-50% - 4px) scale(1.03);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+    }
+
+    /* Distinct backgrounds & animation delays */
+    .btn-1 {
+      background-color: #279371;
+      animation-delay: 0.1s;
+    }
+
+    .btn-2 {
+      background-color: #3F9089;
+      animation-delay: 0.35s;
+    }
+
+    .btn-3 {
+      background-color: #156049;
+      animation-delay: 0.6s;
+    }
+
+    /* Progressive animation from left to right */
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-60px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .context-btn i {
+      font-size: 42px;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .context-btn span {
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.3;
+    }
+
+    .context-btn .action-hint {
+      margin-top: 12px;
+      font-size: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 73, 56, 0.6);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: #D1DE8C;
+      color: #104938;
+      border-radius: 16px;
+      padding: 20px 24px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #104938;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      background: #104938;
+      color: #D1DE8C;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #156049;
+      transform: scale(1.1);
+    }
+
+    .modal-body p {
+      font-size: 11.5px;
+      line-height: 1.5;
+      text-align: justify;
+      font-weight: 500;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 10px;
+      color: #156049;
+      margin-top: 2px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>La administración del tiempo en los contextos personal, académico y profesional</h1>
+      <p>La administración del tiempo no se limita a un ámbito específico; sus principios y herramientas son aplicables de manera transversal (Aeon & Aguinis, 2017; Olivo, 2020).</p>
+    </div>
+
+    <!-- 3 Botones interactivos en fila horizontal -->
+    <div class="buttons-container">
+      
+      <!-- Botón 1 -->
+      <button class="context-btn btn-1" onclick="openModal('modal1')">
+        <i class="fa-solid fa-user"></i>
+        <span>Contexto personal</span>
+        <div class="action-hint"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </button>
+
+      <!-- Botón 2 -->
+      <button class="context-btn btn-2" onclick="openModal('modal2')">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Contexto académico</span>
+        <div class="action-hint"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </button>
+
+      <!-- Botón 3 -->
+      <button class="context-btn btn-3" onclick="openModal('modal3')">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>Contexto profesional y organizacional</span>
+        <div class="action-hint"><i class="fa-solid fa-up-right-from-square"></i> Ver detalle</div>
+      </button>
+
+    </div>
+
+    <div class="footer-note">
+      La administración del tiempo es una habilidad fundamental para desarrollarse con efectividad en los distintos ámbitos de la vida.
+    </div>
+
+    <!-- Modales Emergentes (Fondo #D1DE8C, Texto #104938) -->
+    
+    <!-- Modal 1 -->
+    <div class="modal-overlay" id="modal1" onclick="closeModalOnOutsideClick(event, 'modal1')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-user"></i> Contexto personal</h3>
+          <button class="close-btn" onclick="closeModal('modal1')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>En la vida cotidiana, la administración del tiempo permite equilibrar las diversas responsabilidades y actividades de una persona: familia, salud, descanso, desarrollo personal y ocio. Una gestión adecuada del tiempo personal reduce la sensación de agobio, mejora el bienestar emocional y contribuye a una mayor calidad de vida (Tracy, 2014). Covey (2015) señala que las personas que administran bien su tiempo personal son quienes destinan horas suficientes a actividades del cuadrante II (importantes, pero no urgentes), como el desarrollo de competencias, el cuidado de la salud y la construcción de relaciones significativas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal-overlay" id="modal2" onclick="closeModalOnOutsideClick(event, 'modal2')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-book-open"></i> Contexto académico</h3>
+          <button class="close-btn" onclick="closeModal('modal2')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>En el ámbito universitario, la gestión del tiempo es uno de los predictores más consistentes del rendimiento académico. Los estudiantes que planifican sus actividades distribuyen el tiempo de estudio de manera regular y evitan la postergación obtienen mejores resultados que quienes estudian de forma reactiva e improvisada (Garzón Umerenkova & Gil Flores, 2018). La administración del tiempo en este contexto involucra la planificación de entregas, la organización de sesiones de estudio y la capacidad de equilibrar demandas académicas con otras responsabilidades.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div class="modal-overlay" id="modal3" onclick="closeModalOnOutsideClick(event, 'modal3')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-briefcase"></i> Contexto profesional y organizacional</h3>
+          <button class="close-btn" onclick="closeModal('modal3')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>En las organizaciones, la administración del tiempo impacta directamente en la productividad, la calidad del trabajo y la satisfacción laboral. Drucker (1967) señaló que los directivos que no gestionan su tiempo están, en realidad, administrando las crisis del día a día en lugar de contribuir a los objetivos estratégicos de la organización. Jones (2023) refuerza esta perspectiva al indicar que los equipos de trabajo cuyos integrantes poseen habilidades sólidas de gestión temporal presentan menores tasas de error, mayor eficiencia operativa y mejores indicadores de desempeño organizacional.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOutsideClick(event, id) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
