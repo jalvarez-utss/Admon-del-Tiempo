@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La administración del tiempo como metacompetencia</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    /* Diagrama de Ciclo Horizontal */
+    .cycle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 550px;
+      position: relative;
+    }
+
+    .stage-card {
+      width: 150px;
+      height: 280px;
+      border-radius: 16px;
+      padding: 20px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .stage-card.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stage-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    }
+
+    /* Colores por Etapa */
+    .stage-1 { background-color: #279371; }
+    .stage-2 { background-color: #3F9089; }
+    .stage-3 { background-color: #156049; }
+
+    .stage-icon {
+      font-size: 38px;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+
+    .stage-title {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stage-desc {
+      font-size: 11px;
+      line-height: 1.3;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    /* Flechas conectoras */
+    .arrow-connector {
+      font-size: 24px;
+      color: #D1DE8C;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
+    }
+
+    .arrow-connector.fade-in {
+      opacity: 1;
+    }
+
+    /* Ventanas Emergentes (Modales) */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 73, 56, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: #D1DE8C;
+      color: #104938;
+      border-radius: 14px;
+      padding: 22px 26px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #104938;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      background: #104938;
+      color: #D1DE8C;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #156049;
+      transform: scale(1.1);
+    }
+
+    .modal-body p {
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .modal-footer {
+      margin-top: 12px;
+      font-size: 11px;
+      font-style: italic;
+      text-align: right;
+      border-top: 1px dashed rgba(16, 73, 56, 0.4);
+      padding-top: 6px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="cycle-container">
+      
+      <!-- Etapa 1 -->
+      <div class="stage-card stage-1" id="stage1" onclick="openModal('modal-1')">
+        <i class="fa-solid fa-brain stage-icon"></i>
+        <div class="stage-title">Metacompetencia</div>
+        <div class="stage-desc">Habilita el desarrollo de todas las demás competencias</div>
+      </div>
+
+      <!-- Flecha 1 -->
+      <i class="fa-solid fa-arrow-right arrow-connector" id="arrow1"></i>
+
+      <!-- Etapa 2 -->
+      <div class="stage-card stage-2" id="stage2" onclick="openModal('modal-2')">
+        <i class="fa-solid fa-compass stage-icon"></i>
+        <div class="stage-title">Liderazgo Personal</div>
+        <div class="stage-desc">Dirigirse a uno mismo con claridad y sistematicidad</div>
+      </div>
+
+      <!-- Flecha 2 -->
+      <i class="fa-solid fa-arrow-right arrow-connector" id="arrow2"></i>
+
+      <!-- Etapa 3 -->
+      <div class="stage-card stage-3" id="stage3" onclick="openModal('modal-3')">
+        <i class="fa-solid fa-trophy stage-icon"></i>
+        <div class="stage-title">Ventaja Competitiva</div>
+        <div class="stage-desc">Resultados superiores con igualdad de talento</div>
+      </div>
+
+    </div>
+
+    <!-- Modales Emergentes -->
+
+    <!-- Modal 1: Metacompetencia -->
+    <div class="modal-overlay" id="modal-1" onclick="closeModalOnOutsideClick(event, 'modal-1')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-brain"></i> Metacompetencia</h3>
+          <button class="close-btn" onclick="closeModal('modal-1')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>La administración del tiempo es una metacompetencia: una habilidad fundamental que habilita el desarrollo de todas las demás. Quien no gestiona su tiempo no puede estudiar con regularidad, practicar habilidades con consistencia ni avanzar en proyectos de largo plazo. Es la condición de posibilidad del crecimiento personal y profesional sostenido.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Tracy (2014)</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Liderazgo Personal -->
+    <div class="modal-overlay" id="modal-2" onclick="closeModalOnOutsideClick(event, 'modal-2')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-compass"></i> Liderazgo Personal</h3>
+          <button class="close-btn" onclick="closeModal('modal-2')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Administrar el tiempo representa la capacidad de dirigirse a uno mismo con la misma intención y sistematicidad con la que un líder dirige a su equipo. Es un acto de autoresponsabilidad y autoridad sobre la propia vida donde no se espera a que las circunstancias den tiempo, sino que se crea activamente mediante decisiones conscientes sobre las prioridades.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Covey (2015)</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3: Ventaja Competitiva -->
+    <div class="modal-overlay" id="modal-3" onclick="closeModalOnOutsideClick(event, 'modal-3')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-trophy"></i> Ventaja Competitiva</h3>
+          <button class="close-btn" onclick="closeModal('modal-3')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>"Sin gestión del tiempo, ningún otro recurso puede gestionarse". Esta competencia posiciona el fundamento operativo de toda gestión: el liderazgo, la planeación estratégica, la innovación y la colaboración solo son posibles cuando existe tiempo deliberadamente asignado para ejercerlas, marcando la diferencia en resultados superiores.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Drucker (1967)</i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Animación de aparición secuencial al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      const stage1 = document.getElementById('stage1');
+      const arrow1 = document.getElementById('arrow1');
+      const stage2 = document.getElementById('stage2');
+      const arrow2 = document.getElementById('arrow2');
+      const stage3 = document.getElementById('stage3');
+
+      setTimeout(() => { stage1.classList.add('fade-in'); }, 200);
+      setTimeout(() => { arrow1.classList.add('fade-in'); }, 500);
+      setTimeout(() => { stage2.classList.add('fade-in'); }, 800);
+      setTimeout(() => { arrow2.classList.add('fade-in'); }, 1100);
+      setTimeout(() => { stage3.classList.add('fade-in'); }, 1400);
+    });
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOutsideClick(event, id) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
