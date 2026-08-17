@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El costo de no administrar el tiempo</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 600px;
+      height: 400px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    /* Layout del semáforo */
+    .semaphore-layout {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Estructura del semáforo */
+    .traffic-light {
+      width: 110px;
+      height: 310px;
+      background: #2b2b2b;
+      border-radius: 30px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.8);
+      border: 4px solid #1a1a1a;
+    }
+
+    /* Luces del semáforo */
+    .light {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 30px;
+      color: rgba(255, 255, 255, 0.4);
+      opacity: 0.3;
+      filter: grayscale(80%);
+      transition: all 0.4s ease;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+    }
+
+    .light:hover {
+      transform: scale(1.08);
+    }
+
+    /* Colores base y estado activo */
+    .light.red {
+      background: #B22222;
+    }
+
+    .light.red.active {
+      opacity: 1;
+      filter: grayscale(0%);
+      color: #ffffff;
+      box-shadow: 0 0 25px #B22222, inset 0 -4px 8px rgba(0,0,0,0.3);
+    }
+
+    .light.yellow {
+      background: #DAA520;
+    }
+
+    .light.yellow.active {
+      opacity: 1;
+      filter: grayscale(0%);
+      color: #ffffff;
+      box-shadow: 0 0 25px #DAA520, inset 0 -4px 8px rgba(0,0,0,0.3);
+    }
+
+    .light.green {
+      background: #93C01F;
+    }
+
+    .light.green.active {
+      opacity: 1;
+      filter: grayscale(0%);
+      color: #ffffff;
+      box-shadow: 0 0 25px #93C01F, inset 0 -4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Panel de etiquetas */
+    .labels-panel {
+      display: flex;
+      flex-direction: column;
+      height: 310px;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .label-card {
+      height: 75px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      border-left: 6px solid #ccc;
+      transition: all 0.3s ease;
+      width: 360px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .label-card:hover {
+      transform: translateX(6px);
+      background: #f0f4f1;
+    }
+
+    .label-card.red-card { border-left-color: #B22222; }
+    .label-card.yellow-card { border-left-color: #DAA520; }
+    .label-card.green-card { border-left-color: #93C01F; }
+
+    .label-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #104938;
+      line-height: 1.3;
+    }
+
+    .label-subtitle {
+      font-size: 11px;
+      color: #555;
+      margin-top: 3px;
+    }
+
+    /* Modal / Popup */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(16, 73, 56, 0.65);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: #D1DE8C;
+      color: #104938;
+      border-radius: 14px;
+      padding: 20px 24px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #104938;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      background: #104938;
+      color: #D1DE8C;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #156049;
+      transform: scale(1.1);
+    }
+
+    .modal-body p {
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .modal-footer {
+      margin-top: 12px;
+      font-size: 11px;
+      font-style: italic;
+      text-align: right;
+      border-top: 1px dashed rgba(16, 73, 56, 0.4);
+      padding-top: 6px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="semaphore-layout">
+      
+      <!-- Semáforo visual -->
+      <div class="traffic-light">
+        <div class="light red" id="light-red" onclick="openModal('modal-red')" title="Costo de oportunidad temporal">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div class="light yellow" id="light-yellow" onclick="openModal('modal-yellow')" title="Desperdicio medible">
+          <i class="fa-solid fa-trash-can-arrow-up"></i>
+        </div>
+        <div class="light green" id="light-green" onclick="openModal('modal-green')" title="Administración efectiva">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+      </div>
+
+      <!-- Etiquetas laterales en bold #104938 -->
+      <div class="labels-panel">
+        <div class="label-card red-card" onclick="openModal('modal-red')">
+          <div>
+            <div class="label-title">Costo de oportunidad temporal</div>
+            <div class="label-subtitle">Tiempo invertido en lo urgente a costa de lo importante</div>
+          </div>
+        </div>
+
+        <div class="label-card yellow-card" onclick="openModal('modal-yellow')">
+          <div>
+            <div class="label-title">Desperdicio medible</div>
+            <div class="label-subtitle">30% - 50% del tiempo laboral sin gestión adecuada</div>
+          </div>
+        </div>
+
+        <div class="label-card green-card" onclick="openModal('modal-green')">
+          <div>
+            <div class="label-title">Administración efectiva</div>
+            <div class="label-subtitle">Recuperación estratégica del tiempo de vida y productividad</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modales Emergentes -->
+
+    <!-- Modal Rojo -->
+    <div class="modal-overlay" id="modal-red" onclick="closeModalOnOutsideClick(event, 'modal-red')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> Costo de Oportunidad Temporal</h3>
+          <button class="close-btn" onclick="closeModal('modal-red')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Cada hora invertida en actividades de bajo valor es una hora que se renuncia a actividades de alto impacto. La falta de planificación genera una pérdida acumulada de oportunidades de crecimiento, aprendizaje y desarrollo que no se recuperan, pues el tiempo es un recurso irrecuperable.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Aeon y Aguinis (2017)</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Amarillo -->
+    <div class="modal-overlay" id="modal-yellow" onclick="closeModalOnOutsideClick(event, 'modal-yellow')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-hourglass-half"></i> Desperdicio Medible de Tiempo</h3>
+          <button class="close-btn" onclick="closeModal('modal-yellow')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>En el ámbito laboral, se estima que la mayoría de los trabajadores desperdicia entre un 30% y un 50% de su tiempo de trabajo en actividades sin valor que no contribuyen a sus objetivos principales. Esto equivale a perder meses enteros de productividad cada año.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Tracy (2014)</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Verde -->
+    <div class="modal-overlay" id="modal-green" onclick="closeModalOnOutsideClick(event, 'modal-green')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-shield-halved"></i> Administración Efectiva</h3>
+          <button class="close-btn" onclick="closeModal('modal-green')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <p>Gestionar intencionalmente el tiempo no es un simple asunto de eficiencia técnica, sino una verdadera estrategia para recuperar el tiempo de vida. Permite redirigir las horas hacia metas de alto impacto, desarrollo personal y resultados significativos.</p>
+        </div>
+        <div class="modal-footer">
+          Referencia: <i>Aeon y Aguinis (2017); Tracy (2014)</i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const red = document.getElementById('light-red');
+      const yellow = document.getElementById('light-yellow');
+      const green = document.getElementById('light-green');
+
+      setTimeout(() => { red.classList.add('active'); }, 300);
+      setTimeout(() => { 
+        red.classList.remove('active');
+        yellow.classList.add('active'); 
+      }, 900);
+      setTimeout(() => { 
+        yellow.classList.remove('active');
+        green.classList.add('active'); 
+      }, 1500);
+      setTimeout(() => {
+        red.classList.add('active');
+        yellow.classList.add('active');
+      }, 2100);
+    });
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOutsideClick(event, id) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
