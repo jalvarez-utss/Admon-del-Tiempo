@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definición de procrastinación: perspectivas académicas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background-color: #f7f9f6;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 16px 20px;
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 12px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            font-size: 14px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .cards-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 12px 0;
+            margin-top: 6px;
+        }
+
+        .card-wrapper {
+            display: table-cell;
+            height: 220px;
+            perspective: 1000px;
+            vertical-align: top;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+        }
+
+        .card-wrapper:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Anverso */
+        .card-front {
+            background-color: #104938;
+            color: #ffffff;
+            border: 1px solid #104938;
+        }
+
+        .card-front h2 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .card-front .sub {
+            font-size: 10px;
+            color: #D1DE8C;
+            font-weight: 600;
+        }
+
+        .card-front .hint {
+            position: absolute;
+            bottom: 10px;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            color: #93C01F;
+        }
+
+        /* Reverso */
+        .card-back {
+            background-color: #D1DE8C;
+            color: #104938;
+            transform: rotateY(180deg);
+            border: 1px solid #93C01F;
+        }
+
+        .card-back p {
+            font-size: 9.5px;
+            line-height: 1.35;
+            text-align: center;
+            color: #104938;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 8px;
+            color: #279371;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Definición de procrastinación: perspectivas académicas</h1>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Tarjeta 1: Pychyl & Sirois -->
+            <div class="card-wrapper">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>Pychyl & Sirois</h2>
+                        <span class="sub">(2016)</span>
+                        <span class="hint">Pasa el cursor ➔</span>
+                    </div>
+                    <div class="card-back">
+                        <p>
+                            Postergación voluntaria de una intención a pesar de esperar consecuencias negativas [cite: 3]. Destacan 3 elementos: voluntariedad, intención previa y anticipación de resultados negativos [cite: 3].
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2: Steel -->
+            <div class="card-wrapper">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>Steel</h2>
+                        <span class="sub">(2007)</span>
+                        <span class="hint">Pasa el cursor ➔</span>
+                    </div>
+                    <div class="card-back">
+                        <p>
+                            Emerge del desequilibrio entre la expectativa de éxito y el valor percibido, ponderados contra la impulsividad y la cercanía de la fecha límite [cite: 3].
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3: Ariely & Wertenbroch -->
+            <div class="card-wrapper">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>Ariely & Wertenbroch</h2>
+                        <span class="sub">(2002)</span>
+                        <span class="hint">Pasa el cursor ➔</span>
+                    </div>
+                    <div class="card-back">
+                        <p>
+                            Es especialmente problemática en tareas aversivas pero valiosas: aquellas que no disfrutamos pero resultan fundamentales [cite: 3].
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Pasa el cursor sobre cada tarjeta para girarla y explorar la definición de cada autor
+        </div>
+    </div>
+
+</body>
+</html>
