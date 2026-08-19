@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Eisenhower</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 800px;
+            height: 450px;
+            padding: 14px 18px;
+            background-color: #FFFFFF;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 16px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 9.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 16px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .content-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 6px;
+            height: 350px;
+        }
+
+        .col-wrapper {
+            display: table-cell;
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .col-left {
+            width: 38%;
+            padding-right: 12px;
+        }
+
+        .col-right {
+            width: 62%;
+            padding-left: 4px;
+        }
+
+        .info-card {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 10px 12px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-card p {
+            font-size: 9.5px;
+            line-height: 1.38;
+            color: #104938;
+            text-align: justify;
+        }
+
+        .info-card p b {
+            color: #156049;
+        }
+
+        .highlight-box {
+            background-color: #ffffff;
+            border-left: 3.5px solid #279371;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 9px;
+            line-height: 1.35;
+            color: #104938;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .matrix-wrapper {
+            width: 100%;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .axis-x {
+            display: flex;
+            margin-left: 65px;
+            margin-bottom: 4px;
+        }
+
+        .axis-x-label {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: #104938;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: #f0f7f4;
+            padding: 3px 0;
+            border-radius: 4px;
+            margin: 0 2px;
+            border: 1px solid #d1de8c;
+        }
+
+        .matrix-main-area {
+            display: flex;
+            flex: 1;
+        }
+
+        .axis-y {
+            width: 60px;
+            display: flex;
+            flex-direction: column;
+            margin-right: 5px;
+        }
+
+        .axis-y-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: #104938;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: #f0f7f4;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            border-radius: 4px;
+            margin: 2px 0;
+            border: 1px solid #d1de8c;
+            text-align: center;
+        }
+
+        .quadrants-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .quadrant {
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+
+        .q-number {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
+        .q-action {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .q-title {
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .q-desc {
+            font-size: 8.5px;
+            line-height: 1.3;
+            opacity: 0.95;
+        }
+
+        .q-1 { background-color: #104938; color: #FFFFFF; }
+        .q-2 { background-color: #279371; color: #FFFFFF; }
+        .q-3 { background-color: #3F9089; color: #FFFFFF; }
+        .q-4 { background-color: #D1DE8C; color: #104938; }
+
+        .q-4 .q-header { border-bottom-color: rgba(16, 73, 56, 0.2); }
+        .q-4 .q-action { background-color: rgba(16, 73, 56, 0.15); }
+
+        .footer {
+            text-align: center;
+            font-size: 8px;
+            color: #279371;
+            font-style: italic;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Matriz de Eisenhower</h1>
+        </div>
+
+        <div class="content-grid">
+            <div class="col-wrapper col-left">
+                <div class="info-card">
+                    <div>
+                        <p style="margin-bottom: 8px;">
+                            Atribuida al general Dwight D. Eisenhower y sistematizada por Stephen Covey. Parte de la premisa de que la <b>urgencia</b> y la <b>importancia</b> son dimensiones independientes, y confundirlas genera ineficiencia (Covey, 2015).
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <b>🎯 Aporte Clave (Cuadrante II):</b><br>
+                        Los individuos altamente efectivos invierten la mayor parte de su tiempo en actividades importantes pero no urgentes (planificación y desarrollo). Esto reduce progresivamente las crisis del Cuadrante I.
+                    </div>
+
+                    <div style="font-size: 8px; color: #156049; text-align: center; font-style: italic; margin-top: 4px;">
+                        "Lo que es importante rara vez es urgente, y lo que es urgente rara vez es importante."
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-wrapper col-right">
+                <div class="matrix-wrapper">
+                    <div class="axis-x">
+                        <div class="axis-x-label">Urgente</div>
+                        <div class="axis-x-label">No Urgente</div>
+                    </div>
+
+                    <div class="matrix-main-area">
+                        <div class="axis-y">
+                            <div class="axis-y-label">Importante</div>
+                            <div class="axis-y-label">No Importante</div>
+                        </div>
+
+                        <div class="quadrants-grid">
+                            <div class="quadrant q-1">
+                                <div>
+                                    <div class="q-header">
+                                        <span class="q-number">Cuadrante I</span>
+                                        <span class="q-action">HACER</span>
+                                    </div>
+                                    <div class="q-title">Urgente e Importante</div>
+                                </div>
+                                <div class="q-desc">Crisis, imprevistos, proyectos con fecha límite inmediata y problemas apremiantes.</div>
+                            </div>
+
+                            <div class="quadrant q-2">
+                                <div>
+                                    <div class="q-header">
+                                        <span class="q-number">Cuadrante II</span>
+                                        <span class="q-action">PLANIFICAR</span>
+                                    </div>
+                                    <div class="q-title">No Urgente pero Importante</div>
+                                </div>
+                                <div class="q-desc">Planificación estratégica, prevención, desarrollo de competencias y construcción de relaciones.</div>
+                            </div>
+
+                            <div class="quadrant q-3">
+                                <div>
+                                    <div class="q-header">
+                                        <span class="q-number">Cuadrante III</span>
+                                        <span class="q-action">DELEGAR</span>
+                                    </div>
+                                    <div class="q-title">Urgente pero No Importante</div>
+                                </div>
+                                <div class="q-desc">Interrupciones, llamadas, correos no críticos y solicitudes inmediatas de otros.</div>
+                            </div>
+
+                            <div class="quadrant q-4">
+                                <div>
+                                    <div class="q-header">
+                                        <span class="q-number">Cuadrante IV</span>
+                                        <span class="q-action">ELIMINAR</span>
+                                    </div>
+                                    <div class="q-title">Ni Urgente ni Importante</div>
+                                </div>
+                                <div class="q-desc">Distractores, trivialidades, actividades de escape y pérdidas de tiempo.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Sistematización de la Matriz de Eisenhower en la productividad (Covey, 2015)
+        </div>
+    </div>
+</body>
+</html>
