@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consecuencias de la procrastinación</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background-color: #f7f9f6;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 14px 18px;
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 12px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 8.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        h1 {
+            font-size: 13.5px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .cards-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 8px 0;
+            margin-top: 4px;
+        }
+
+        .card-wrapper {
+            display: table-cell;
+            height: 228px;
+            vertical-align: top;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Colores especificados en el requerimiento */
+        .card-1 { background-color: #279371; }
+        .card-2 { background-color: #3F9089; }
+        .card-3 { background-color: #104938; }
+        .card-4 { background-color: #156049; }
+
+        .icon-container {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+        }
+
+        .card-title {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            padding-bottom: 4px;
+            width: 100%;
+        }
+
+        .card-body {
+            font-size: 8.5px;
+            line-height: 1.35;
+            text-align: center;
+            color: #f0f7f4;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 8px;
+            color: #279371;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Consecuencias de la procrastinación</h1>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Nivel Personal -->
+            <div class="card-wrapper">
+                <div class="card card-1">
+                    <div class="icon-container">
+                        <!-- Ícono Persona / Emoción -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <div class="card-title">Personal</div>
+                    <div class="card-body">
+                        Ansiedad crónica, culpa, vergüenza y erosión de la autoestima. Se internalizan narrativas negativas que generan baja autoeficacia (Pychyl, 2013).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel Académico -->
+            <div class="card-wrapper">
+                <div class="card card-2">
+                    <div class="icon-container">
+                        <!-- Ícono Académico / Graduación -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                        </svg>
+                    </div>
+                    <div class="card-title">Académico</div>
+                    <div class="card-body">
+                        Bajo rendimiento, menor retención de conocimiento, calificaciones deficientes y, en casos extremos, abandono escolar.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel Profesional -->
+            <div class="card-wrapper">
+                <div class="card card-3">
+                    <div class="icon-container">
+                        <!-- Ícono Profesional / Portafolio -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                        </svg>
+                    </div>
+                    <div class="card-title">Profesional</div>
+                    <div class="card-body">
+                        Percepción de menor confiabilidad, límites en ascensos, reducción de productividad y pérdidas económicas (Steel, 2007).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel Organizacional -->
+            <div class="card-wrapper">
+                <div class="card card-4">
+                    <div class="icon-container">
+                        <!-- Ícono Organización / Edificio -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                        </svg>
+                    </div>
+                    <div class="card-title">Organizacional</div>
+                    <div class="card-body">
+                        Ciclos de crisis permanente, elevación de costos, menor innovación y erosión de la cultura organizacional (Jones, 2023).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Consecuencias multinivel del comportamiento procrastinador
+        </div>
+    </div>
+
+</body>
+</html>
