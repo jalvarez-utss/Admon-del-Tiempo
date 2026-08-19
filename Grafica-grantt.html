@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfica de Gantt</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 800px;
+            height: 450px;
+            padding: 14px 18px;
+            background-color: #FFFFFF;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 16px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 9.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 16px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        /* Layout Principal */
+        .content-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 6px;
+            height: 350px;
+        }
+
+        .col-wrapper {
+            display: table-cell;
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .col-left {
+            width: 32%;
+            padding-right: 12px;
+        }
+
+        .col-right {
+            width: 68%;
+            padding-left: 2px;
+        }
+
+        /* Tarjeta Teórica Lateral */
+        .info-card {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 12px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-card p {
+            font-size: 9.5px;
+            line-height: 1.4;
+            color: #104938;
+            text-align: justify;
+        }
+
+        .info-card p b {
+            color: #156049;
+        }
+
+        .highlight-box {
+            background-color: #ffffff;
+            border-left: 3.5px solid #279371;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 9px;
+            line-height: 1.35;
+            color: #104938;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        /* Gantt Table Area */
+        .gantt-wrapper {
+            width: 100%;
+            height: 350px;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gantt-table {
+            width: 100%;
+            border-collapse: collapse;
+            height: 100%;
+            table-layout: fixed;
+        }
+
+        .gantt-table th {
+            background-color: #104938;
+            color: #FFFFFF;
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 4px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .gantt-table th.col-task {
+            width: 28%;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .gantt-table td {
+            font-size: 9px;
+            color: #104938;
+            padding: 0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e8e8e8;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .gantt-table tr:nth-child(even) {
+            background-color: #F5F5F5;
+        }
+
+        .gantt-table tr:nth-child(odd) {
+            background-color: #FFFFFF;
+        }
+
+        .task-name {
+            font-weight: 700;
+            padding-left: 10px !important;
+            color: #104938;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Gantt Bars */
+        .bar-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 2px;
+        }
+
+        .gantt-bar {
+            height: 22px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 8.5px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        /* Bar Colors according to specification */
+        .bar-1 { background-color: #279371; left: 4%; width: 44%; }  /* Sem 1 - Sem 2 */
+        .bar-2 { background-color: #3F9089; left: 28%; width: 44%; } /* Sem 2 - Sem 3 */
+        .bar-3 { background-color: #93C01F; left: 52%; width: 44%; } /* Sem 3 - Sem 4 */
+        .bar-4 { background-color: #D1DE8C; left: 76%; width: 20%; color: #104938; } /* Sem 4 */
+
+        .footer {
+            text-align: center;
+            font-size: 8px;
+            color: #279371;
+            font-style: italic;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Gráfica de Gantt</h1>
+        </div>
+
+        <div class="content-grid">
+            <!-- Columna Izquierda: Fundamentos Teóricos -->
+            <div class="col-wrapper col-left">
+                <div class="info-card">
+                    <div>
+                        <p style="margin-bottom: 8px;">
+                            Desarrollada por <b>Henry Laurence Gantt</b> (1910-1915) en el marco de la administración científica. Es el instrumento de planificación y seguimiento de proyectos más utilizado a nivel mundial (Wilson, 2003).
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <b>📊 Estructura Bidimensional:</b><br>
+                        • <b>Eje Horizontal:</b> Escala de tiempo.<br>
+                        • <b>Eje Vertical:</b> Fases / Tareas.<br>
+                        • <b>Barras:</b> Longitud proporcional a la duración estimada (Wilson, 2003).
+                    </div>
+
+                    <div style="font-size: 8px; color: #156049; text-align: center; font-style: italic; margin-top: 4px;">
+                        Base teórica de herramientas como MS Project, Asana y Trello.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Ilustración de Gráfica de Gantt -->
+            <div class="col-wrapper col-right">
+                <div class="gantt-wrapper">
+                    <table class="gantt-table">
+                        <thead>
+                            <tr>
+                                <th class="col-task">Actividad / Fase</th>
+                                <th>Semana 1</th>
+                                <th>Semana 2</th>
+                                <th>Semana 3</th>
+                                <th>Semana 4</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Actividad 1 -->
+                            <tr>
+                                <td class="task-name">1. Diagnóstico e Investigación</td>
+                                <td colspan="4">
+                                    <div class="gantt-bar bar-1">2 Semanas</div>
+                                </td>
+                            </tr>
+                            <!-- Actividad 2 -->
+                            <tr>
+                                <td class="task-name">2. Diseño y Planificación</td>
+                                <td colspan="4">
+                                    <div class="gantt-bar bar-2">2 Semanas</div>
+                                </td>
+                            </tr>
+                            <!-- Actividad 3 -->
+                            <tr>
+                                <td class="task-name">3. Ejecución y Desarrollo</td>
+                                <td colspan="4">
+                                    <div class="gantt-bar bar-3">2 Semanas</div>
+                                </td>
+                            </tr>
+                            <!-- Actividad 4 -->
+                            <tr>
+                                <td class="task-name">4. Cierre y Evaluación</td>
+                                <td colspan="4">
+                                    <div class="gantt-bar bar-4">1 Sem.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Fundamentos de la Gráfica de Gantt en la administración de proyectos (Wilson, 2003)
+        </div>
+    </div>
+
+</body>
+</html>
