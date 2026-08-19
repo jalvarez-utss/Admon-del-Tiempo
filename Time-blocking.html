@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Blocking (Bloqueo de Tiempo)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 800px;
+            height: 450px;
+            padding: 16px 20px;
+            background-color: #FFFFFF;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 16px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        /* Bloque Teórico */
+        .theory-card {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            display: flex;
+            gap: 16px;
+        }
+
+        .theory-col {
+            flex: 1;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #104938;
+            text-align: justify;
+        }
+
+        .theory-col b {
+            color: #156049;
+        }
+
+        .quote-box {
+            background-color: #ffffff;
+            border-left: 3px solid #279371;
+            padding: 6px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 10.5px;
+            margin-top: 6px;
+            color: #156049;
+            font-style: italic;
+        }
+
+        /* Seccion Diagrama de Flujo */
+        .flowchart-section {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #104938;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .flowchart-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .flow-card {
+            background-color: #279371;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 10px 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(39, 147, 113, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .step-num-badge {
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+
+        .flow-icon {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .flow-title {
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Flecha de conexión */
+        .arrow-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            flex-shrink: 0;
+        }
+
+        .arrow-svg {
+            width: 20px;
+            height: 20px;
+            fill: #93C01F;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 9px;
+            color: #279371;
+            font-style: italic;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Time Blocking (Bloqueo de Tiempo)</h1>
+        </div>
+
+        <!-- Tarjeta de Fundamentos Teóricos -->
+        <div class="theory-card">
+            <div class="theory-col">
+                <p>
+                    <b>Concepto:</b> Consiste en dividir la jornada en bloques temporales predefinidos y asignados en exclusiva a una tarea o categoría de actividades (Newport, 2016). A diferencia de una lista clásica de pendientes, establece con precisión <i>qué</i> hacer y <i>cuándo</i> ejecutarlo.
+                </p>
+            </div>
+            <div class="theory-col">
+                <p>
+                    <b>Fundamento Cognitivo:</b> La multitarea (<i>multitasking</i>) genera una pérdida de hasta el <b>40% del tiempo productivo</b> por el costo atencional de reorientar el foco (Aeon & Aguinis, 2017). Además, mejora la visibilidad de compromisos en equipos de trabajo (Jones, 2023).
+                </p>
+            </div>
+        </div>
+
+        <!-- Diagrama de Flujo (4 Pasos) -->
+        <div class="flowchart-section">
+            <div class="section-title">Diagrama de Flujo: Secuencia de Aplicación</div>
+            <div class="flowchart-grid">
+                
+                <!-- Paso 1 -->
+                <div class="flow-card">
+                    <span class="step-num-badge">Paso 1</span>
+                    <svg class="flow-icon" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    <div class="flow-title">Identificar actividades</div>
+                </div>
+
+                <!-- Flecha 1 -->
+                <div class="arrow-connector">
+                    <svg class="arrow-svg" viewBox="0 0 24 24">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="flow-card">
+                    <span class="step-num-badge">Paso 2</span>
+                    <svg class="flow-icon" viewBox="0 0 24 24">
+                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    <div class="flow-title">Estimar tiempo</div>
+                </div>
+
+                <!-- Flecha 2 -->
+                <div class="arrow-connector">
+                    <svg class="arrow-svg" viewBox="0 0 24 24">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="flow-card">
+                    <span class="step-num-badge">Paso 3</span>
+                    <svg class="flow-icon" viewBox="0 0 24 24">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+                    </svg>
+                    <div class="flow-title">Asignar bloque horario</div>
+                </div>
+
+                <!-- Flecha 3 -->
+                <div class="arrow-connector">
+                    <svg class="arrow-svg" viewBox="0 0 24 24">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="flow-card">
+                    <span class="step-num-badge">Paso 4</span>
+                    <svg class="flow-icon" viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                    </svg>
+                    <div class="flow-title">Respetar el bloque</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pie de página -->
+        <div class="footer">
+            Fundamentos de la técnica Time Blocking (Newport, 2016; Aeon & Aguinis, 2017; Jones, 2023)
+        </div>
+    </div>
+
+</body>
+</html>
