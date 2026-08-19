@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley de Parkinson</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background-color: #f7f9f6;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 12px 16px;
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 12px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 8.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 13px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .content-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 6px;
+            height: 242px;
+        }
+
+        .col-wrapper {
+            display: table-cell;
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .col-left {
+            width: 50%;
+            padding-right: 10px;
+        }
+
+        .col-right {
+            width: 50%;
+            padding-left: 6px;
+        }
+
+        /* Bloque Teórico */
+        .text-card {
+            background-color: #ffffff;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 10px 12px;
+            height: 242px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .text-block p {
+            font-size: 8.5px;
+            line-height: 1.35;
+            color: #104938;
+            margin-bottom: 6px;
+            text-align: justify;
+        }
+
+        .text-block p b {
+            color: #156049;
+        }
+
+        .quote-box {
+            background-color: #f0f7f4;
+            border-left: 3px solid #279371;
+            padding: 6px 8px;
+            border-radius: 0 6px 6px 0;
+            font-size: 8px;
+            line-height: 1.3;
+            color: #156049;
+            font-style: italic;
+        }
+
+        .tip-box {
+            background-color: #d1de8c;
+            color: #104938;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 7.5px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-top: 4px;
+        }
+
+        /* Gráfico Vectorial Ley de Parkinson */
+        .chart-card {
+            background-color: #ffffff;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 10px;
+            height: 242px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .card-title-sub {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #104938;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+            text-align: center;
+        }
+
+        .svg-chart-container {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 7.5px;
+            color: #279371;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Ley de Parkinson</h1>
+        </div>
+
+        <div class="content-grid">
+            <!-- Columna Izquierda: Teoría y Explicación Cognitiva -->
+            <div class="col-wrapper col-left">
+                <div class="text-card">
+                    <div class="text-block">
+                        <p>
+                            Enunciada por Cyril Northcote Parkinson en 1955. Postula la ley fundamental sobre la gestión del tiempo y esfuerzo:
+                        </p>
+                    </div>
+
+                    <div class="quote-box">
+                        "El trabajo se expande hasta llenar el tiempo disponible para su terminación."
+                        <span style="display:block; text-align:right; font-weight:bold; font-style:normal; margin-top:2px;">— Parkinson (1957)</span>
+                    </div>
+
+                    <div class="text-block" style="margin-top: 4px;">
+                        <p>
+                            <b>Mecanismo cognitivo:</b> Al disponer de tiempo excesivo, la mente tiende al perfeccionismo no esencial, la dilación e introduce revisiones innecesarias.
+                        </p>
+                    </div>
+
+                    <div class="tip-box">
+                        💡 <b>Estrategia de Jones (2023):</b> Establecer plazos deliberadamente cortos y ajustados para catalizar la concentración.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Ilustración Vectorial de Expansión del Tiempo -->
+            <div class="col-wrapper col-right">
+                <div class="chart-card">
+                    <div class="card-title-sub">Efecto de Expansión del Trabajo</div>
+
+                    <div class="svg-chart-container">
+                        <svg width="250" height="195" viewBox="0 0 250 195">
+                            <!-- Fondo del gráfico/guías -->
+                            <rect x="10" y="10" width="230" height="175" fill="#f9fbf8" rx="6" stroke="#e1ebdf" stroke-width="1" />
+
+                            <!-- SECCIÓN 1: TIEMPO REAL NECESARIO -->
+                            <text x="20" y="32" fill="#104938" font-size="8.5" font-weight="bold">1. Tiempo real necesario:</text>
+                            
+                            <!-- Barra Corta (Tiempo Real) #93C01F -->
+                            <rect x="20" y="38" width="80" height="26" fill="#93C01F" rx="4" />
+                            <text x="60" y="54" fill="#104938" font-size="8" font-weight="bold" text-anchor="middle">Esfuerzo Real</text>
+                            <text x="108" y="54" fill="#104938" font-size="7.5" font-weight="bold">(Ej. 2 hrs)</text>
+
+                            <!-- Flecha de Expansión #3F9089 -->
+                            <g transform="translate(20, 72)">
+                                <line x1="80" y1="12" x2="205" y2="12" stroke="#3F9089" stroke-width="2" stroke-dasharray="3,3" />
+                                <polygon points="210,12 202,8 202,16" fill="#3F9089" />
+                                <!-- Etiqueta sobre flecha -->
+                                <rect x="90" y="2" width="105" height="18" fill="#3F9089" rx="3" />
+                                <text x="142.5" y="14" fill="#FFFFFF" font-size="7.5" font-weight="bold" text-anchor="middle">⚡ El trabajo se expande...</text>
+                            </g>
+
+                            <!-- SECCIÓN 2: TIEMPO DISPONIBLE ASIGNADO -->
+                            <text x="20" y="112" fill="#104938" font-size="8.5" font-weight="bold">2. Tiempo disponible asignado:</text>
+                            
+                            <!-- Barra Larga (Tiempo Disponible) #279371 -->
+                            <rect x="20" y="118" width="210" height="30" fill="#279371" rx="4" />
+                            <text x="125" y="133" fill="#FFFFFF" font-size="8.5" font-weight="bold" text-anchor="middle">Trabajo expandido hasta llenar el límite</text>
+                            <text x="125" y="143" fill="#D1DE8C" font-size="7" text-anchor="middle">(Perfeccionismo, distracción y revisiones no esenciales)</text>
+
+                            <!-- Indicador de límite final -->
+                            <line x1="230" y1="114" x2="230" y2="152" stroke="#104938" stroke-width="1.5" stroke-dasharray="2,2" />
+                            <text x="228" y="163" fill="#104938" font-size="7" font-weight="bold" text-anchor="end">Plazo Límite (Ej. 8 hrs)</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Fundamentos y análisis cognitivo de la Ley de Parkinson (Parkinson, 1957; Jones, 2023)
+        </div>
+    </div>
+
+</body>
+</html>
