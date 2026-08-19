@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conclusión General - Administración del Tiempo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            background-color: #104938;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 800px;
+            height: 450px;
+            padding: 16px 22px;
+            background-color: #104938;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 9.5px;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #FFFFFF;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            line-height: 1.1;
+        }
+
+        /* Text Block */
+        .summary-text {
+            font-size: 10.5px;
+            line-height: 1.4;
+            color: #E2ECE9;
+            text-align: justify;
+            background-color: rgba(255, 255, 255, 0.06);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border-left: 4px solid #279371;
+            margin: 4px 0;
+        }
+
+        .summary-text b {
+            color: #D1DE8C;
+        }
+
+        /* Table Area */
+        .table-wrapper {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            border: 1px solid rgba(209, 222, 140, 0.35);
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .summary-table th {
+            background-color: #156049;
+            color: #D1DE8C;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 7px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .summary-table th.col-tech {
+            width: 28%;
+        }
+
+        .summary-table th.col-use {
+            width: 72%;
+        }
+
+        .summary-table td {
+            font-size: 9.5px;
+            color: #FFFFFF;
+            padding: 6px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            vertical-align: middle;
+        }
+
+        .summary-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .summary-table tr:nth-child(odd) {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tech-name {
+            font-weight: bold;
+            color: #D1DE8C;
+            white-space: nowrap;
+        }
+
+        .tech-use {
+            color: #F5F5F5;
+            line-height: 1.25;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 8.5px;
+            color: #93C01F;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Administración del Tiempo</span>
+            <h1>6.- Conclusión General</h1>
+        </div>
+
+        <!-- Síntesis Teórica -->
+        <div class="summary-text">
+            Las seis técnicas representan aproximaciones complementarias para organizar el tiempo y concentrar esfuerzos [cite: 15]. En la práctica, los profesionales más eficaces combinan varias técnicas en función de cada contexto (Claessens et al., 2007; Jones, 2023) [cite: 15].
+        </div>
+
+        <!-- Tabla Compacta de Casos de Uso -->
+        <div class="table-wrapper">
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th class="col-tech">Técnica</th>
+                        <th class="col-use">Caso de Uso Ideal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tech-name">🍅 Técnica Pomodoro</td>
+                        <td class="tech-use">Concentración y foco en bloques cortos de trabajo para evitar fatiga mental [cite: 15].</td>
+                    </tr>
+                    <tr>
+                        <td class="tech-name">📊 Ley de Pareto (80/20)</td>
+                        <td class="tech-use">Priorización estratégica identificando el 20% de tareas de máximo impacto [cite: 15].</td>
+                    </tr>
+                    <tr>
+                        <td class="tech-name">⏳ Ley de Parkinson</td>
+                        <td class="tech-use">Asignación de plazos strictly de evitar la dilatación innecesaria del trabajo [cite: 15].</td>
+                    </tr>
+                    <tr>
+                        <td class="tech-name">📅 Time Blocking</td>
+                        <td class="tech-use">Estructuración de la jornada mediante bloques fijos dedicados en el calendario [cite: 15].</td>
+                    </tr>
+                    <tr>
+                        <td class="tech-name">🎯 Matriz de Eisenhower</td>
+                        <td class="tech-use">Priorización estratégica clasificando tareas según su urgencia e importancia [cite: 15].</td>
+                    </tr>
+                    <tr>
+                        <td class="tech-name">📈 Gráfica de Gantt</td>
+                        <td class="tech-use">Planificación, cronograma y seguimiento visual detallado de proyectos [cite: 15].</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Referencias: Claessens et al. (2007); Jones (2023) — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
