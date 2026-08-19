@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley de Pareto (Principio 80/20)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            color: #104938;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 12px 16px;
+            background-color: #FFFFFF;
+            border: 1px solid #d1de8c;
+            box-shadow: 0 4px 12px rgba(16, 73, 56, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #d1de8c;
+            color: #104938;
+            font-size: 8.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 13px;
+            color: #104938;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .content-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 6px;
+            height: 242px;
+        }
+
+        .col-wrapper {
+            display: table-cell;
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .col-left {
+            width: 52%;
+            padding-right: 10px;
+        }
+
+        .col-right {
+            width: 48%;
+            padding-left: 6px;
+        }
+
+        /* Bloque Teórico e Instrucciones */
+        .text-card {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 10px 12px;
+            height: 242px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .text-block p {
+            font-size: 8.5px;
+            line-height: 1.35;
+            color: #104938;
+            margin-bottom: 6px;
+            text-align: justify;
+        }
+
+        .text-block p b {
+            color: #156049;
+        }
+
+        .steps-list {
+            background-color: #ffffff;
+            border: 1px solid #e1ebdf;
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-top: 2px;
+        }
+
+        .steps-title {
+            font-size: 8px;
+            font-weight: 800;
+            color: #104938;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .step-item {
+            font-size: 7.5px;
+            color: #156049;
+            line-height: 1.25;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background-color: #279371;
+            color: #ffffff;
+            font-size: 7px;
+            font-weight: 800;
+            border-radius: 50%;
+            width: 11px;
+            height: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+
+        /* Gráfico Vectorial de Barras */
+        .chart-card {
+            background-color: #f7f9f6;
+            border: 1px solid #d1de8c;
+            border-radius: 8px;
+            padding: 10px;
+            height: 242px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title-sub {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #104938;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+            text-align: center;
+        }
+
+        .svg-chart-container {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 7.5px;
+            color: #279371;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <span class="badge">Admon. del Tiempo</span>
+            <h1>Ley de Pareto (Principio 80/20)</h1>
+        </div>
+
+        <div class="content-grid">
+            <!-- Columna Izquierda: Concepto y Pasos -->
+            <div class="col-wrapper col-left">
+                <div class="text-card">
+                    <div class="text-block">
+                        <p>
+                            <b>Origen y Concepto:</b> Formulado por Vilfredo Pareto (1897) y sistematizado por Richard Koch (2013). Postula que una minoría de causas (~20%) genera la mayoría de los resultados (~80%).
+                        </p>
+                        <p>
+                            En la administración del tiempo, la clave no es hacer más actividades, sino identificar y concentrarse en las de mayor impacto relativo.
+                        </p>
+                    </div>
+
+                    <div class="steps-list">
+                        <div class="steps-title">Pasos de Aplicación Práctica:</div>
+                        <div class="step-item"><span class="step-num">1</span> Realizar inventario completo de actividades.</div>
+                        <div class="step-item"><span class="step-num">2</span> Evaluar el impacto relativo de cada tarea.</div>
+                        <div class="step-item"><span class="step-num">3</span> Concentrar el 80% del tiempo en el 20% clave.</div>
+                        <div class="step-item"><span class="step-num">4</span> Reducir, delegar o eliminar las restantes.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Gráfico Vectorial 80/20 -->
+            <div class="col-wrapper col-right">
+                <div class="chart-card">
+                    <div class="card-title-sub">Proporción Esfuerzo vs. Resultado</div>
+
+                    <div class="svg-chart-container">
+                        <svg width="240" height="190" viewBox="0 0 240 190">
+                            <!-- Ejes -->
+                            <line x1="30" y1="160" x2="220" y2="160" stroke="#104938" stroke-width="1.5" />
+                            <line x1="30" y1="20" x2="30" y2="160" stroke="#104938" stroke-width="1.5" />
+
+                            <!-- Líneas de cuadrícula sutiles -->
+                            <line x1="30" y1="50" x2="220" y2="50" stroke="#104938" stroke-dasharray="2,2" stroke-opacity="0.2" />
+                            <line x1="30" y1="120" x2="220" y2="120" stroke="#104938" stroke-dasharray="2,2" stroke-opacity="0.2" />
+
+                            <!-- Barra 1: 20% de Actividades (Pequeña) -->
+                            <rect x="55" y="125" width="55" height="35" fill="#D1DE8C" rx="4" />
+                            <text x="82.5" y="117" fill="#104938" font-size="9" font-weight="bold" text-anchor="middle">20%</text>
+                            <text x="82.5" y="173" fill="#104938" font-size="8" font-weight="bold" text-anchor="middle">Actividades</text>
+                            <text x="82.5" y="183" fill="#156049" font-size="7" text-anchor="middle">(Esfuerzo Clave)</text>
+
+                            <!-- Barra 2: 80% de Resultados (Grande) -->
+                            <rect x="140" y="35" width="55" height="125" fill="#279371" rx="4" />
+                            <text x="167.5" y="27" fill="#104938" font-size="10" font-weight="bold" text-anchor="middle">80%</text>
+                            <text x="167.5" y="173" fill="#104938" font-size="8" font-weight="bold" text-anchor="middle">Resultados</text>
+                            <text x="167.5" y="183" fill="#156049" font-size="7" text-anchor="middle">(Impacto Logrado)</text>
+
+                            <!-- Flecha y Conexión Curva -->
+                            <path d="M 112 135 C 125 135, 125 50, 138 50" fill="none" stroke="#104938" stroke-width="1.5" stroke-dasharray="3,3" />
+                            <polygon points="138,46 145,50 138,54" fill="#104938" />
+
+                            <!-- Etiqueta sobre la flecha -->
+                            <rect x="100" y="80" width="50" height="16" fill="#104938" rx="3" />
+                            <text x="125" y="91" fill="#FFFFFF" font-size="7" font-weight="bold" text-anchor="middle">Genera</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Fundamentos y sistematización de la Ley de Pareto en la productividad (Koch, 2013)
+        </div>
+    </div>
+
+</body>
+</html>
