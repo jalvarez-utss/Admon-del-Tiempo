@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=600, initial-scale=1.0">
+    <title>inteligencia emocional</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 600px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #104938 0%, #279371 100%);
+            color: #ffffff;
+            padding: 20px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #d1de8c;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Audio Player Control Bar */
+        .player-bar {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f3d2e;
+            padding: 14px 16px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            background: #104938;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #279371;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .settings-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 11.5px;
+            color: #1f2937;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        select, input[type="range"] {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            font-size: 11px;
+            outline: none;
+        }
+
+        /* Content Viewer */
+        .content-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #d1de8c;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(209, 222, 140, 0.3);
+            padding-bottom: 2px;
+        }
+
+        .paragraph {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #f0fdf4;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .paragraph:last-child {
+            margin-bottom: 0;
+        }
+
+        .paragraph.active {
+            background: #ffffff;
+            color: #0f3d2e;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .graphic-box {
+            background: rgba(15, 61, 46, 0.6);
+            border-left: 4px solid #93c01f;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 11px;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 10.5px;
+            color: #d1de8c;
+            opacity: 0.9;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎧 Ebook Audiolibro & Visor</h1>
+            <p>Administración del Tiempo — Inteligencia Emocional</p>
+        </div>
+
+        <!-- Reproductor de Audio -->
+        <div class="player-bar">
+            <div class="player-controls">
+                <div class="btn-group">
+                    <button class="btn" id="btn-play">▶ Reproducir</button>
+                    <button class="btn" id="btn-pause" disabled>⏸ Pausar</button>
+                    <button class="btn" id="btn-stop" disabled>⏹ Detener</button>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #104938;" id="status-text">
+                    Listo para reproducir
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label for="voice-select"><strong>Voz:</strong></label>
+                    <select id="voice-select" style="max-width: 180px;"></select>
+                </div>
+
+                <div class="setting-item">
+                    <label for="rate-range"><strong>Velocidad:</strong></label>
+                    <input type="range" id="rate-range" min="0.7" max="1.5" value="1" step="0.1">
+                    <span id="rate-val">1.0x</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Texto / Visor Dinámico -->
+        <div class="content-card" id="text-container">
+            <div class="section-title">Objetivo del Tema</div>
+            <p class="paragraph">
+                En esta actividad de desarrollo describirás el concepto de inteligencia emocional y reconocerás sus características fundamentales, con el propósito de comprender su influencia en el desempeño personal, académico y laboral.
+            </p>
+
+            <div class="section-title">Introducción</div>
+            <p class="paragraph">
+                En el ámbito profesional contemporáneo, el desempeño de las personas no se determina exclusivamente por el conocimiento técnico o el coeficiente intelectual. Las investigaciones de las últimas décadas han puesto de manifiesto que quienes logran reconocer, comprender y regular sus propias emociones alcanzaron resultados superiores en entornos laborales, académicos y personales. Este conjunto de competencias emocionales recibe el nombre de inteligencia emocional y constituye, según Goleman (2022), uno de los predictores más sólidos del éxito personal y profesional.
+            </p>
+            <p class="paragraph">
+                El concepto fue acuñado por Salovey y Mayer (1990), quienes lo definieron como la capacidad de procesar información emocional con precisión e integrarla en los procesos de pensamiento y conducta adaptativa. Fue Goleman (2022) quien popularizó el término y lo organizó en un modelo de cinco dominios: autoconocimiento emocional, autorregulación, motivación intrínseca, empatía y habilidades sociales. Bisquerra (2023) amplió este marco al proponer la educación emocional como un proceso continuo y permanente.
+            </p>
+
+            <div class="section-title">Concepto de Inteligencia Emocional</div>
+            <p class="paragraph">
+                La inteligencia emocional se define como el conjunto de competencias que determinan la manera en que una persona se relaciona consigo misma y con los demás (Goleman, 2022). A diferencia del coeficiente intelectual, que permanece relativamente estable a lo largo de la vida, la inteligencia emocional puede desarrollarse mediante la práctica, la reflexión y la formación intencional (Bisquerra, 2023).
+            </p>
+            <p class="paragraph">
+                Salovey y Mayer (1990) la definen como la habilidad de monitorear los propios sentimientos y emociones, de distinguir entre ellos y de usar esa información para guiar el pensamiento y la acción. En términos prácticos, una persona con alta inteligencia emocional no actúa por impulso: primero reflexiona, regula su respuesta emocional y luego elige la reacción más adecuada.
+            </p>
+
+            <div class="section-title">Características de la Inteligencia Emocional</div>
+            <p class="paragraph">
+                Goleman (2022) organiza la inteligencia emocional en cinco dominios fundamentales:
+            </p>
+            <p class="paragraph">
+                1. <strong>Autoconocimiento emocional:</strong> Capacidad de identificar y comprender las propias emociones en el momento en que se presentan, reconociendo cómo influyen en el pensamiento y el comportamiento.
+            </p>
+            <p class="paragraph">
+                2. <strong>Autorregulación emocional:</strong> Capacidad de controlar y canalizar las emociones de forma constructiva, sin suprimirlas ni dejarse dominar por ellas. Implica autocontrol y adaptabilidad ante la incertidumbre.
+            </p>
+            <p class="paragraph">
+                3. <strong>Motivación intrínseca:</strong> Capacidad de impulsarse hacia el logro de metas por satisfacción personal o sentido de propósito, sin depender exclusivamente de recompensas externas.
+            </p>
+            <p class="paragraph">
+                4. <strong>Empatía:</strong> Capacidad de reconocer, comprender y conectar con las emociones de otras personas, permitiendo entender su perspectiva y construir relaciones saludables (Brown, 2021).
+            </p>
+            <p class="paragraph">
+                5. <strong>Habilidades sociales:</strong> Competencias que permiten influir en las emociones y reacciones de los demás de forma positiva mediante la comunicación efectiva, el manejo de conflictos y el trabajo en equipo.
+            </p>
+
+            <div class="section-title">Emociones, Conducta y Toma de Decisiones</div>
+            <p class="paragraph">
+                Las emociones determinan de forma directa la conducta, la comunicación y la toma de decisiones. Las emociones básicas (miedo, ira, tristeza, alegría, asco y sorpresa) generan patrones conductuales adaptativos. En cuanto a la toma de decisiones, Bisquerra (2023) demuestra que las emociones son fundamentales para la calidad del razonamiento y la resolución de problemas en el entorno organizacional.
+            </p>
+
+            <div class="section-title">Influencia en el Ámbito Personal y Laboral</div>
+            <p class="paragraph">
+                En la dimensión personal, la inteligencia emocional contribuye al autocontrol, la autoestima y la resiliencia ante el estrés. En el ámbito laboral, Goleman et al. (2022) señalan que los líderes con alta inteligencia emocional generan climas laborales positivos, mejoran la comunicación, gestionan conflictos eficazmente y fortalecen las relaciones comerciales y el contacto con clientes (Robbins & Judge, 2023).
+            </p>
+
+            <div class="section-title">Aplicaciones a Negocios y Mercadotecnia</div>
+            <p class="paragraph">
+                Kotler y Keller (2022) señalan que las decisiones de compra son predominantemente emocionales. Comprender las motivaciones del consumidor y aplicar inteligencia emocional en la negociación (Ury, 2022) permite cerrar acuerdos favorables y construir marcas duraderas.
+            </p>
+
+            <div class="section-title">Conclusión</div>
+            <p class="paragraph">
+                La inteligencia emocional es una competencia desarrollable que transforma el liderazgo, la toma de decisiones y el desempeño laboral. Al integrarla, los profesionales no solo mejoran su bienestar, sino que impulsan la efectividad organizacional.
+            </p>
+
+            <div class="section-title">Referencias</div>
+            <p class="paragraph">
+                • Bisquerra, R. (2023). Inteligencia emocional en educación y empresa. Síntesis.<br>
+                • Brown, B. (2021). El poder de ser vulnerable. Urano.<br>
+                • Goleman, D. (2022). Inteligencia emocional. Kairós.<br>
+                • Kotler, P., & Keller, K. L. (2022). Dirección de marketing. Pearson.<br>
+                • Salovey, P., & Mayer, J. D. (1990). Emotional intelligence.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Asignatura: Administración del Tiempo &bull; Actividad: AD.03.01.01
+        </div>
+    </div>
+
+    <!-- Script de Síntesis de Voz (Web Speech API) -->
+    <script>
+        const synth = window.speechSynthesis;
+        const paragraphs = Array.from(document.querySelectorAll('.paragraph'));
+        const btnPlay = document.getElementById('btn-play');
+        const btnPause = document.getElementById('btn-pause');
+        const btnStop = document.getElementById('btn-stop');
+        const voiceSelect = document.getElementById('voice-select');
+        const rateRange = document.getElementById('rate-range');
+        const rateVal = document.getElementById('rate-val');
+        const statusText = document.getElementById('status-text');
+
+        let voices = [];
+        let currentIndex = 0;
+        let isSpeaking = false;
+        let isPaused = false;
+
+        function populateVoices() {
+            voices = synth.getVoices().filter(voice => voice.lang.includes('es'));
+            voiceSelect.innerHTML = '';
+            
+            if (voices.length === 0) {
+                voices = synth.getVoices();
+            }
+
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                option.value = index;
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        rateRange.addEventListener('input', () => {
+            rateVal.textContent = `${parseFloat(rateRange.value).toFixed(1)}x`;
+        });
+
+        function speakParagraph(index) {
+            if (index >= paragraphs.length) {
+                stopSpeech();
+                statusText.textContent = 'Lectura finalizada';
+                return;
+            }
+
+            currentIndex = index;
+            paragraphs.forEach((p, i) => p.classList.toggle('active', i === index));
+            paragraphs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            const text = paragraphs[index].textContent.trim();
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            if (voices.length > 0) {
+                const selectedVoiceIndex = voiceSelect.value;
+                if (voices[selectedVoiceIndex]) {
+                    utterance.voice = voices[selectedVoiceIndex];
+                }
+            }
+
+            utterance.rate = parseFloat(rateRange.value);
+
+            utterance.onend = () => {
+                if (isSpeaking && !isPaused) {
+                    speakParagraph(currentIndex + 1);
+                }
+            };
+
+            utterance.onerror = () => {
+                stopSpeech();
+            };
+
+            synth.speak(utterance);
+            statusText.textContent = `Leyendo sección ${index + 1} de ${paragraphs.length}...`;
+        }
+
+        btnPlay.addEventListener('click', () => {
+            if (isPaused) {
+                synth.resume();
+                isPaused = false;
+                isSpeaking = true;
+                btnPlay.disabled = true;
+                btnPause.disabled = false;
+                btnStop.disabled = false;
+                statusText.textContent = `Reproduciendo sección ${currentIndex + 1}...`;
+            } else {
+                synth.cancel();
+                isSpeaking = true;
+                isPaused = false;
+                btnPlay.disabled = true;
+                btnPause.disabled = false;
+                btnStop.disabled = false;
+                speakParagraph(0);
+            }
+        });
+
+        btnPause.addEventListener('click', () => {
+            if (synth.speaking && !isPaused) {
+                synth.pause();
+                isPaused = true;
+                btnPlay.disabled = false;
+                btnPause.disabled = true;
+                statusText.textContent = 'En pausa';
+            }
+        });
+
+        function stopSpeech() {
+            synth.cancel();
+            isSpeaking = false;
+            isPaused = false;
+            currentIndex = 0;
+            paragraphs.forEach(p => p.classList.remove('active'));
+            btnPlay.disabled = false;
+            btnPause.disabled = true;
+            btnStop.disabled = true;
+            statusText.textContent = 'Listo para reproducir';
+        }
+
+        btnStop.addEventListener('click', stopSpeech);
+    </script>
+</body>
+</html>
