@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=600, initial-scale=1.0">
+    <title>Visor Dinámico y Audiolibro - Google Calendar</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 600px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #104938 0%, #279371 100%);
+            color: #ffffff;
+            padding: 20px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #d1de8c;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Audio Player Control Bar */
+        .player-bar {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f3d2e;
+            padding: 14px 16px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            background: #104938;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #279371;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .settings-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 11.5px;
+            color: #1f2937;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        select, input[type="range"] {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            font-size: 11px;
+            outline: none;
+        }
+
+        /* Content Viewer */
+        .content-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .paragraph {
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: #f0fdf4;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .paragraph:last-child {
+            margin-bottom: 0;
+        }
+
+        .paragraph.active {
+            background: #ffffff;
+            color: #0f3d2e;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 10.5px;
+            color: #d1de8c;
+            opacity: 0.9;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎧 Audiolibro & Visor Dinámico</h1>
+            <p>Google Calendar — Gestión del Tiempo</p>
+        </div>
+
+        <!-- Reproductor de Audio -->
+        <div class="player-bar">
+            <div class="player-controls">
+                <div class="btn-group">
+                    <button class="btn" id="btn-play">▶ Reproducir</button>
+                    <button class="btn" id="btn-pause" disabled>⏸ Pausar</button>
+                    <button class="btn" id="btn-stop" disabled>⏹ Detener</button>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #104938;" id="status-text">
+                    Listo para reproducir
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label for="voice-select"><strong>Voz:</strong></label>
+                    <select id="voice-select" style="max-width: 180px;"></select>
+                </div>
+
+                <div class="setting-item">
+                    <label for="rate-range"><strong>Velocidad:</strong></label>
+                    <input type="range" id="rate-range" min="0.7" max="1.5" value="1" step="0.1">
+                    <span id="rate-val">1.0x</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Texto / Visor Dinámico -->
+        <div class="content-card" id="text-container">
+            <p class="paragraph" id="p1">
+                Google Calendar es una herramienta de gestión de calendario desarrollada por Google a principios de la década de 2000 como parte de su suite de productividad en línea, Google Workspace. Su propósito es centralizar la visualización del tiempo disponible, identificar conflictos de agenda y facilitar la coordinación de eventos con otras personas a través de invitaciones automatizadas. El diseño de Google Calendar se fundamenta en la premisa de que la mayoría de las actividades tienen una dimensión temporal específica que puede representarse en una vista calendárica uniforme (Google Workspace Learning Center, s.f.).
+            </p>
+            <p class="paragraph" id="p2">
+                Desde el punto de vista funcional, Google Calendar permite crear eventos con múltiples atributos: título, hora, duración, ubicación, descripción, invitados, recordatorios y etiquetas de categoría mediante código de colores. La sincronización automática entre dispositivos significa que cualquier modificación en el calendario es inmediatamente visible en todos ellos, siempre que exista conexión a Internet. Cuando se invita a un colega a un evento, Google Calendar envía notificaciones automáticas y actualiza el calendario de todos los participantes en tiempo real (Google Workspace Learning Center, s.f.).
+            </p>
+            <p class="paragraph" id="p3">
+                Las ventajas principales de Google Calendar incluyen: accesibilidad universal desde cualquier navegador sin necesidad de instalación; integración nativa con otras aplicaciones de Google Workspace —Google Meet, Gmail, Google Tasks, Google Drive—, lo que permite crear un ecosistema de productividad coherente; uso de colores para categorización visual que facilita la identificación rápida de tipos de eventos; y generación de recordatorios automáticos mediante notificaciones en el navegador, correo electrónico o el teléfono móvil.
+            </p>
+            <p class="paragraph" id="p4">
+                Sus limitaciones principales radican en que depende de conexión a Internet, aunque algunas funciones offline están disponibles; puede generar saturación de notificaciones si no se configura adecuadamente; y requiere una cuenta de Google, lo que puede ser una barrera para usuarios con restricciones institucionales o preferencias de privacidad (Area Moreira, 2022).
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            jalvarez-utss / Admon-del-Tiempo &bull; Google Calendar Visor
+        </div>
+    </div>
+
+    <!-- Script de Síntesis de Voz (Web Speech API) -->
+    <script>
+        const synth = window.speechSynthesis;
+        const paragraphs = Array.from(document.querySelectorAll('.paragraph'));
+        const btnPlay = document.getElementById('btn-play');
+        const btnPause = document.getElementById('btn-pause');
+        const btnStop = document.getElementById('btn-stop');
+        const voiceSelect = document.getElementById('voice-select');
+        const rateRange = document.getElementById('rate-range');
+        const rateVal = document.getElementById('rate-val');
+        const statusText = document.getElementById('status-text');
+
+        let voices = [];
+        let currentIndex = 0;
+        let isSpeaking = false;
+        let isPaused = false;
+
+        function populateVoices() {
+            voices = synth.getVoices().filter(voice => voice.lang.includes('es'));
+            voiceSelect.innerHTML = '';
+            
+            if (voices.length === 0) {
+                voices = synth.getVoices();
+            }
+
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                option.value = index;
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        rateRange.addEventListener('input', () => {
+            rateVal.textContent = `${parseFloat(rateRange.value).toFixed(1)}x`;
+        });
+
+        function speakParagraph(index) {
+            if (index >= paragraphs.length) {
+                stopSpeech();
+                statusText.textContent = 'Lectura finalizada';
+                return;
+            }
+
+            currentIndex = index;
+            paragraphs.forEach((p, i) => p.classList.toggle('active', i === index));
+            paragraphs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            const text = paragraphs[index].textContent.trim();
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            if (voices.length > 0) {
+                const selectedVoiceIndex = voiceSelect.value;
+                if (voices[selectedVoiceIndex]) {
+                    utterance.voice = voices[selectedVoiceIndex];
+                }
+            }
+
+            utterance.rate = parseFloat(rateRange.value);
+
+            utterance.onend = () => {
+                if (isSpeaking && !isPaused) {
+                    speakParagraph(currentIndex + 1);
+                }
+            };
+
+            utterance.onerror = () => {
+                stopSpeech();
+            };
+
+            synth.speak(utterance);
+            statusText.textContent = `Leyendo párrafo ${index + 1} de ${paragraphs.length}...`;
+        }
+
+        btnPlay.addEventListener('click', () => {
+            if (isPaused) {
+                synth.resume();
+                isPaused = false;
+                isSpeaking = true;
+                btnPlay.disabled = true;
+                btnPause.disabled = false;
+                btnStop.disabled = false;
+                statusText.textContent = `Reproduciendo párrafo ${currentIndex + 1}...`;
+            } else {
+                synth.cancel();
+                isSpeaking = true;
+                isPaused = false;
+                btnPlay.disabled = true;
+                btnPause.disabled = false;
+                btnStop.disabled = false;
+                speakParagraph(0);
+            }
+        });
+
+        btnPause.addEventListener('click', () => {
+            if (synth.speaking && !isPaused) {
+                synth.pause();
+                isPaused = true;
+                btnPlay.disabled = false;
+                btnPause.disabled = true;
+                statusText.textContent = 'En pausa';
+            }
+        });
+
+        function stopSpeech() {
+            synth.cancel();
+            isSpeaking = false;
+            isPaused = false;
+            currentIndex = 0;
+            paragraphs.forEach(p => p.classList.remove('active'));
+            btnPlay.disabled = false;
+            btnPause.disabled = true;
+            btnStop.disabled = true;
+            statusText.textContent = 'Listo para reproducir';
+        }
+
+        btnStop.addEventListener('click', stopSpeech);
+    </script>
+</body>
+</html>
