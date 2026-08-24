@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liderazgo Situacional</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            width: 360px;
+            height: 600px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #104938 0%, #156049 55%, #279371 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 360px;
+            height: 600px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* Altamente condensado sin espacios muertos */
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 7.5px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 13.5px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            line-height: 1.1;
+        }
+
+        /* Concept Box */
+        .concept-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #D1DE8C;
+            padding: 6px 8px;
+            border-radius: 0 5px 5px 0;
+            font-size: 8px;
+            line-height: 1.25;
+            color: #E2ECE9;
+            text-align: justify;
+        }
+
+        .concept-box b {
+            color: #D1DE8C;
+        }
+
+        /* Matriz 2x2 */
+        .matrix-card {
+            background: rgba(16, 73, 56, 0.85);
+            border: 1px solid rgba(209, 222, 140, 0.35);
+            border-radius: 6px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .matrix-title {
+            font-size: 8.5px;
+            font-weight: 700;
+            color: #D1DE8C;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .quadrant {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(209, 222, 140, 0.25);
+            border-radius: 4px;
+            padding: 4px 5px;
+            text-align: left;
+        }
+
+        .quadrant-title {
+            font-size: 8px;
+            font-weight: 800;
+            color: #D1DE8C;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .quadrant-desc {
+            font-size: 7px;
+            color: #E2ECE9;
+            line-height: 1.15;
+        }
+
+        /* Cards Pro & Con */
+        .card-pro {
+            background: rgba(39, 147, 113, 0.25);
+            border-left: 3px solid #D1DE8C;
+            padding: 5px 8px;
+            border-radius: 0 5px 5px 0;
+            font-size: 7.8px;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+        .card-con {
+            background: rgba(200, 50, 50, 0.15);
+            border-left: 3px solid #E8A8A8;
+            padding: 5px 8px;
+            border-radius: 0 5px 5px 0;
+            font-size: 7.8px;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+        .card-pro strong { color: #D1DE8C; }
+        .card-con strong { color: #E8A8A8; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 6.8px;
+            color: #93C01F;
+            font-style: italic;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Estilos de Liderazgo</span>
+            <h1>Liderazgo Situacional</h1>
+        </div>
+
+        <!-- Concepto Principal -->
+        <div class="concept-box">
+            <b>Marco Conceptual:</b> Propuesto por Hersey y Blanchard (Blanchard, 2022), sostiene que no existe un estilo único de liderazgo. Adapta la respuesta al nivel de madurez (competencia y compromiso) de cada colaborador por tarea [cite: 13].
+        </div>
+
+        <!-- Matriz 2x2 -->
+        <div class="matrix-card">
+            <div class="matrix-title">Matriz 2x2: Competencia vs. Compromiso</div>
+            <div class="grid-container">
+                <!-- Cuadrante 1: Apoyar -->
+                <div class="quadrant">
+                    <div class="quadrant-title">🤝 Apoyar</div>
+                    <div class="quadrant-desc">Alta competencia / Bajo compromiso. Motivación y escucha.</div>
+                </div>
+                <!-- Cuadrante 2: Delegar -->
+                <div class="quadrant">
+                    <div class="quadrant-title">🚀 Delegar</div>
+                    <div class="quadrant-desc">Alta competencia / Alto compromiso. Autonomía total.</div>
+                </div>
+                <!-- Cuadrante 3: Dirigir -->
+                <div class="quadrant">
+                    <div class="quadrant-title">🎯 Dirigir</div>
+                    <div class="quadrant-desc">Baja competencia / Alto entusiasmo. Instrucción clara.</div>
+                </div>
+                <!-- Cuadrante 4: Entrenar -->
+                <div class="quadrant">
+                    <div class="quadrant-title">💡 Entrenar</div>
+                    <div class="quadrant-desc">Algo de competencia / Baja confianza. Guía y feedback.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ventajas y Limitaciones -->
+        <div class="card-pro">
+            <strong>✅ Ventajas:</strong> Maximiza el desarrollo individual partiendo de un diagnóstico real y dinámico de cada persona [cite: 13].
+        </div>
+
+        <div class="card-con">
+            <strong>⚠️ Limitaciones:</strong> Exige alto nivel de diagnóstico y flexibilidad al líder, dificultando su uso en equipos muy numerosos [cite: 13].
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Referencias: Hersey y Blanchard (citado en Blanchard, 2022) — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
