@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estilos de Liderazgo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #104938 0%, #156049 60%, #279371 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 8px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 14px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        /* Definition / Intro Box */
+        .intro-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #D1DE8C;
+            padding: 6px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 8px;
+            line-height: 1.3;
+            color: #E2ECE9;
+            text-align: justify;
+        }
+
+        .intro-box b {
+            color: #D1DE8C;
+        }
+
+        /* Styles Grid (8 Icons) */
+        .styles-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin: 2px 0;
+        }
+
+        .style-row {
+            display: table-row;
+        }
+
+        .style-card-wrapper {
+            display: table-cell;
+            width: 25%;
+            padding: 3px;
+            vertical-align: top;
+        }
+
+        .style-card {
+            background: rgba(16, 73, 56, 0.65);
+            border: 1px solid rgba(209, 222, 140, 0.3);
+            border-radius: 6px;
+            padding: 5px 6px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .style-icon {
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .style-title {
+            font-size: 8px;
+            font-weight: bold;
+            color: #D1DE8C;
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+
+        .style-desc {
+            font-size: 7px;
+            color: #F5F5F5;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        /* Key Takeaway Banner */
+        .takeaway-box {
+            background-color: rgba(63, 144, 137, 0.25);
+            border: 1px dashed #D1DE8C;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 7.5px;
+            color: #FFFFFF;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        .takeaway-box b {
+            color: #D1DE8C;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 7px;
+            color: #93C01F;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Liderazgo Organizacional</span>
+            <h1>Estilos de Liderazgo</h1>
+        </div>
+
+        <!-- Introducción -->
+        <div class="intro-box">
+            <b>Marco Conceptual:</b> El estilo de liderazgo es el patrón habitual de comportamiento para influir, comunicarse, tomar decisiones y resolver conflictos (Robbins y Judge, 2023) [cite: 16]. No existe un estilo superior: la efectividad depende del contexto, madurez del equipo y metas perseguidas [cite: 16].
+        </div>
+
+        <!-- Mapa / Rejilla de los 8 Estilos de Liderazgo -->
+        <div class="styles-grid">
+            <div class="style-row">
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">👑</div>
+                        <div class="style-title">Autocrático</div>
+                        <div class="style-desc">Toma de decisiones centralizada y control directo de procesos [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🗳️</div>
+                        <div class="style-title">Democrático</div>
+                        <div class="style-desc">Participación del equipo y toma de decisiones consensuada [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🕊️</div>
+                        <div class="style-title">Laissez-faire</div>
+                        <div class="style-desc">Autonomía total delegando responsabilidad en equipos maduros [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🚀</div>
+                        <div class="style-title">Transformacional</div>
+                        <div class="style-desc">Inspiración y visión para impulsar el cambio y desarrollo [cite: 16].</div>
+                    </div>
+                </div>
+            </div>
+            <div class="style-row">
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">⚖️</div>
+                        <div class="style-title">Transaccional</div>
+                        <div class="style-desc">Intercambio claro de metas, recompensas y supervisión [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🧭</div>
+                        <div class="style-title">Situacional</div>
+                        <div class="style-desc">Adaptación flexible del estilo según la madurez del equipo [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🤝</div>
+                        <div class="style-title">De Servicio</div>
+                        <div class="style-desc">Enfoque en atender las necesidades y potenciar al equipo [cite: 16].</div>
+                    </div>
+                </div>
+                <div class="style-card-wrapper">
+                    <div class="style-card">
+                        <div class="style-icon">🎯</div>
+                        <div class="style-title">De Coaching</div>
+                        <div class="style-desc">Desarrollo de habilidades y crecimiento personal a largo plazo [cite: 16].</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusión -->
+        <div class="takeaway-box">
+            💡 <b>Inteligencia Emocional:</b> Los líderes efectivos diagnostican el contexto para seleccionar el estilo adecuado en cada circunstancia (Robbins y Judge, 2023) [cite: 16].
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Referencias: Robbins y Judge (2023) — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
