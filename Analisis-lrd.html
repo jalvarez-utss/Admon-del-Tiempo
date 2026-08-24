@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Casos Contextualizados</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            width: 360px;
+            height: 600px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #104938 0%, #156049 55%, #279371 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 360px;
+            height: 600px;
+            padding: 9px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* Altamente condensado para ajustar 5 casos en 600px de alto */
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 7.5px;
+            font-weight: 700;
+            padding: 1.5px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 12.5px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            line-height: 1.1;
+        }
+
+        /* Introduction Box */
+        .intro-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #D1DE8C;
+            padding: 4px 7px;
+            border-radius: 0 4px 4px 0;
+            font-size: 7.2px;
+            line-height: 1.2;
+            color: #E2ECE9;
+            text-align: justify;
+        }
+
+        .intro-box b {
+            color: #D1DE8C;
+        }
+
+        /* Storyboard Container - List of 5 Cases */
+        .cases-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+        }
+
+        .case-card {
+            background: rgba(16, 73, 56, 0.85);
+            border: 1px solid rgba(209, 222, 140, 0.3);
+            border-radius: 4px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .case-icon-badge {
+            background: rgba(209, 222, 140, 0.2);
+            border: 1px solid #D1DE8C;
+            border-radius: 4px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .case-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .case-header {
+            font-size: 7.5px;
+            font-weight: 800;
+            color: #D1DE8C;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .case-text {
+            font-size: 6.8px;
+            color: #E2ECE9;
+            line-height: 1.15;
+            text-align: justify;
+        }
+
+        /* Highlight / Insight Footer Box */
+        .insight-box {
+            background: rgba(39, 147, 113, 0.3);
+            border: 1px dashed rgba(209, 222, 140, 0.4);
+            border-radius: 4px;
+            padding: 4px 7px;
+            font-size: 7px;
+            line-height: 1.2;
+            color: #FFFFFF;
+            text-align: justify;
+        }
+
+        .insight-box b {
+            color: #D1DE8C;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 6.5px;
+            color: #93C01F;
+            font-style: italic;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Casos Prácticos</span>
+            <h1>Análisis de Casos Contextualizados</h1>
+        </div>
+
+        <!-- Introducción -->
+        <div class="intro-box">
+            <b>Aplicación Práctica:</b> Situaciones organizacionales en desarrollo de negocios y mercadotecnia para analizar las ventajas, limitaciones y flexibilidad del liderazgo e inteligencia emocional [cite: 14].
+        </div>
+
+        <!-- Storyboard de 5 Casos -->
+        <div class="cases-container">
+            <!-- Caso 1 -->
+            <div class="case-card">
+                <div class="case-icon-badge">📉</div>
+                <div class="case-content">
+                    <div class="case-header">Caso 1: Cierre de Metas de Ventas</div>
+                    <div class="case-text">Tres meses sin alcanzar metas; faltan 5 días para cerrar el mes. El gerente debe decidir cómo actuar bajo presión [cite: 14].</div>
+                </div>
+            </div>
+
+            <!-- Caso 2 -->
+            <div class="case-card">
+                <div class="case-icon-badge">🎨</div>
+                <div class="case-content">
+                    <div class="case-header">Caso 2: Campaña Multidisciplinaria</div>
+                    <div class="case-text">Equipo creativo (diseño, redes, redacción, medios) debe lanzar campaña en 4 semanas con roles claros e interdependientes [cite: 14].</div>
+                </div>
+            </div>
+
+            <!-- Caso 3 -->
+            <div class="case-card">
+                <div class="case-icon-badge">👥</div>
+                <div class="case-content">
+                    <div class="case-header">Caso 3: Diversidad de Experiencia</div>
+                    <div class="case-text">Liderazgo de 5 personas con madurez diversa: 2 analistas nuevos, 2 especialistas de 3 años y 1 consultora senior (10 años) [cite: 14].</div>
+                </div>
+            </div>
+
+            <!-- Caso 4 -->
+            <div class="case-card">
+                <div class="case-icon-badge">⚔️</div>
+                <div class="case-content">
+                    <div class="case-header">Caso 4: Conflicto Ventas vs. Mercadotecnia</div>
+                    <div class="case-text">Mercadotecnia critica el seguimiento de campaña; ventas señala falta de enfoque en el cliente real [cite: 14].</div>
+                </div>
+            </div>
+
+            <!-- Caso 5 -->
+            <div class="case-card">
+                <div class="case-icon-badge">🚨</div>
+                <div class="case-content">
+                    <div class="case-header">Caso 5: Crisis en Redes Sociales</div>
+                    <div class="case-text">Crisis de reputación digital. Equipo de comunicación paralizado por incertidumbre donde el tiempo es crítico [cite: 14].</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reflexión Clave -->
+        <div class="insight-box">
+            💡 <b>Clave del Análisis:</b> Cada contexto requiere diagnosticar la situación e inteligencia emocional para aplicar el estilo de liderazgo más efectivo [cite: 14].
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Casos Contextualizados — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
