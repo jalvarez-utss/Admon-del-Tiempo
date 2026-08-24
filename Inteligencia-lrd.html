@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inteligencia Emocional y Liderazgo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            width: 360px;
+            height: 600px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #104938 0%, #156049 55%, #279371 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 360px;
+            height: 600px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* Condensado para aprovechamiento máximo en 600px */
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 7.5px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 13px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            line-height: 1.1;
+        }
+
+        /* Concept Box */
+        .concept-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #D1DE8C;
+            padding: 5px 8px;
+            border-radius: 0 5px 5px 0;
+            font-size: 7.8px;
+            line-height: 1.25;
+            color: #E2ECE9;
+            text-align: justify;
+        }
+
+        .concept-box b {
+            color: #D1DE8C;
+        }
+
+        /* Foundation Visual Diagram */
+        .foundation-card {
+            background: rgba(16, 73, 56, 0.85);
+            border: 1px solid rgba(209, 222, 140, 0.35);
+            border-radius: 6px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .foundation-title {
+            font-size: 8px;
+            font-weight: 700;
+            color: #D1DE8C;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
+        }
+
+        .styles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+
+        .style-item {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(209, 222, 140, 0.25);
+            border-radius: 3px;
+            padding: 2px 1px;
+            font-size: 6.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .base-pillar {
+            background: #D1DE8C;
+            color: #104938;
+            font-weight: 800;
+            font-size: 7.5px;
+            padding: 4px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* 4 Dimensions Grid */
+        .dim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+
+        .dim-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(209, 222, 140, 0.2);
+            border-radius: 4px;
+            padding: 4px 5px;
+        }
+
+        .dim-title {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #D1DE8C;
+            margin-bottom: 1px;
+        }
+
+        .dim-desc {
+            font-size: 6.8px;
+            color: #E2ECE9;
+            line-height: 1.15;
+        }
+
+        /* Multiplier Callout */
+        .multiplier-box {
+            background: rgba(39, 147, 113, 0.25);
+            border-left: 3px solid #D1DE8C;
+            padding: 5px 8px;
+            border-radius: 0 5px 5px 0;
+            font-size: 7.5px;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+        .multiplier-box strong {
+            color: #D1DE8C;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 6.5px;
+            color: #93C01F;
+            font-style: italic;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Fundamento de Liderazgo</span>
+            <h1>Inteligencia Emocional</h1>
+        </div>
+
+        <!-- Concepto Principal -->
+        <div class="concept-box">
+            <b>Cimiento del Liderazgo Efectivo:</b> Competencia transversal que distingue a los líderes efectivos (Goleman et al., 2022) [cite: 13]. Permite diagnosticar al equipo y adaptar el estilo de liderazgo con precisión [cite: 13].
+        </div>
+
+        <!-- Diagrama de Base / Cimiento -->
+        <div class="foundation-card">
+            <div class="foundation-title">Estilos de Liderazgo Sostenidos</div>
+            <div class="styles-grid">
+                <div class="style-item">🎯 Situacional</div>
+                <div class="style-item">⚖️ Transacc.</div>
+                <div class="style-item">🤲 Servicio</div>
+                <div class="style-item">💬 Coaching</div>
+                <div class="style-item">🚀 Transform.</div>
+                <div class="style-item">🤝 Afiliativo</div>
+                <div class="style-item">🏆 Modélico</div>
+                <div class="style-item">👑 Autorid.</div>
+            </div>
+            <div class="base-pillar">
+                🏛️ Cimiento: Inteligencia Emocional (Goleman et al., 2022)
+            </div>
+        </div>
+
+        <!-- Las 4 Dimensiones Bisquerra / Goleman -->
+        <div class="dim-grid">
+            <div class="dim-card">
+                <div class="dim-title">🔍 Autoconocimiento</div>
+                <div class="dim-desc">Reconoce cómo sus propias emociones y reacciones impactan al equipo [cite: 13].</div>
+            </div>
+            <div class="dim-card">
+                <div class="dim-title">🛡️ Autorregulación</div>
+                <div class="dim-desc">Mantiene la calma y la coherencia en escenarios bajo presión [cite: 13].</div>
+            </div>
+            <div class="dim-card">
+                <div class="dim-title">❤️ Empatía</div>
+                <div class="dim-desc">Comprende las necesidades y estados emocionales de los colaboradores [cite: 13].</div>
+            </div>
+            <div class="dim-card">
+                <div class="dim-title">🌐 Habilidades Sociales</div>
+                <div class="dim-desc">Comunica con efectividad, gestiona conflictos y construye confianza (Bisquerra, 2023) [cite: 13].</div>
+            </div>
+        </div>
+
+        <!-- Efecto Multiplicador -->
+        <div class="multiplier-box">
+            <strong>✨ Efecto Multiplicador:</strong> Genera climas de confianza donde las personas se sienten escuchadas y motivadas, impulsando la creatividad, resiliencia y resolución de problemas (Goleman et al., 2022) [cite: 13].
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Referencias: Goleman et al. (2022); Bisquerra (2023) — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
