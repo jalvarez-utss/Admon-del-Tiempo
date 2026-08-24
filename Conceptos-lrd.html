@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Concepto de Liderazgo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            width: 600px;
+            height: 337.5px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #104938 0%, #156049 60%, #279371 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 337.5px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #D1DE8C;
+            color: #104938;
+            font-size: 8px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-size: 14px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        /* Essential Pillars Grid */
+        .pillars-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin: 2px 0;
+        }
+
+        .pillar-card-wrapper {
+            display: table-cell;
+            width: 50%;
+            padding: 0 4px;
+            vertical-align: top;
+        }
+
+        .pillar-card-wrapper:first-child { padding-left: 0; }
+        .pillar-card-wrapper:last-child { padding-right: 0; }
+
+        .pillar-card {
+            background: rgba(16, 73, 56, 0.65);
+            border: 1px solid rgba(209, 222, 140, 0.35);
+            border-radius: 6px;
+            padding: 7px 10px;
+            height: 105px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+        }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .pillar-icon {
+            font-size: 13px;
+            margin-right: 6px;
+        }
+
+        .pillar-title {
+            font-size: 9px;
+            font-weight: bold;
+            color: #D1DE8C;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .pillar-desc {
+            font-size: 8px;
+            color: #F5F5F5;
+            line-height: 1.25;
+            text-align: justify;
+        }
+
+        /* Impact Section */
+        .impact-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #3F9089;
+            padding: 6px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 8px;
+            line-height: 1.3;
+            color: #E2ECE9;
+            text-align: justify;
+        }
+
+        .impact-box b {
+            color: #D1DE8C;
+        }
+
+        /* Contrast / Comparison Box */
+        .comparison-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            border: 1px dashed rgba(209, 222, 140, 0.4);
+            padding: 5px;
+        }
+
+        .comp-col {
+            display: table-cell;
+            width: 50%;
+            padding: 0 6px;
+            font-size: 7.5px;
+            line-height: 1.2;
+            vertical-align: top;
+        }
+
+        .comp-col strong {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 8px;
+        }
+
+        .comp-positive { color: #D1DE8C; }
+        .comp-negative { color: #E8A8A8; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 7px;
+            color: #93C01F;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">Liderazgo Organizaciónal</span>
+            <h1>El Concepto de Liderazgo</h1>
+        </div>
+
+        <!-- Pilares Esenciales del Liderazgo -->
+        <div class="pillars-grid">
+            <div class="pillar-card-wrapper">
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <span class="pillar-icon">✨</span>
+                        <span class="pillar-title">Influencia e Inspiración</span>
+                    </div>
+                    <div class="pillar-desc">
+                        Capacidad genuina de motivar e inspirar hacia objetivos comunes, diferenciándose de la coerción o manipulación (Maxwell, 2021) [cite: 18].
+                    </div>
+                </div>
+            </div>
+
+            <div class="pillar-card-wrapper">
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <span class="pillar-icon">🤝</span>
+                        <span class="pillar-title">Compromiso Voluntario</span>
+                    </div>
+                    <div class="pillar-desc">
+                        Supera la mera obediencia formal [cite: 18]. Se construye a través de la confianza, credibilidad, competencia e integridad (Robbins & Judge, 2023) [cite: 18].
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impacto Organizacional e Inteligencia Emocional -->
+        <div class="impact-box">
+            <b>Impacto Organizacional:</b> El liderazgo incide directamente en el clima laboral, motivación y toma de decisiones [cite: 18]. Los líderes con alta inteligencia emocional generan un efecto multiplicador, creando entornos donde los colaboradores se sienten escuchados y valorados (Goleman et al., 2022) [cite: 18].
+        </div>
+
+        <!-- Comparativa de Enfoques -->
+        <div class="comparison-grid">
+            <div class="comp-col">
+                <strong class="comp-positive">🌱 Líder con Inteligencia Emocional:</strong>
+                Genera lealtad, fomenta la creatividad y maximiza el potencial a mediano y largo plazo (Goleman et al., 2022) [cite: 18].
+            </div>
+            <div class="comp-col">
+                <strong class="comp-negative">⚠️ Líder Basado en Control y Presión:</strong>
+                Obtiene resultados inmediatos pero deteriora la motivación, lealtad y creatividad del equipo (Goleman et al., 2022) [cite: 18].
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Referencias: Maxwell (2021); Robbins & Judge (2023); Goleman et al. (2022) — Admon-del-Tiempo
+        </div>
+    </div>
+
+</body>
+</html>
